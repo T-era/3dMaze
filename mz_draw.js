@@ -25,7 +25,7 @@ Mz.drawAll = function(canvas, context) {
 				showRangeAt(distance + 1, d(pos));
 			}
 			showAwayWalls(0, pos);
-			showSideWalls(0, pos);
+			showWalls(0, pos);
 
 			function showAwayWalls(lr) {
 				if (lr < range) {
@@ -48,28 +48,65 @@ Mz.drawAll = function(canvas, context) {
 				}
 			}
 
-			function showSideWalls(lr) {
+			function showWalls(lr) {
 				if (lr < range) {
-					showSideWalls(lr + 1);
+					showWalls(lr + 1);
 				}
-				var rRoom = Mz.Field.at(right(pos, lr));
-				var lRoom = Mz.Field.at(right(pos, -lr));
+				showWalls2(0);
+				
+				function showWalls2(df) {
+					if (df < range) {
+						showWalls2(df + 1);
+					}
+					showAllWalls(lr, df);
+					showAllWalls(-lr, df);
+					showAllWalls(lr, -df);
+					showAllWalls(-lr, -df);
+					function showAllWalls(blr, bdf) {
+						function aplyBdf(pos, d) { return { x: pos.x, y: pos.y, z: pos.z + d }; }
+						var room = Mz.Field.at(aplyBdf(right(pos, blr), bdf));
 
-				if (rRoom
-					&& rRoom.hasRightWall(direction)) {
-					fillWall(convX(lr+1, sizeNear), convY(0, sizeNear)
-						, convX(lr+1, sizeNear), convY(0, sizeNear)+sizeNear-1
-						, convX(lr+1, sizeAway), convY(0, sizeAway)+sizeAway-1
-						, convX(lr+1, sizeAway), convY(0, sizeAway)
-						, distance * 2 + lr);
-				}
-				if (lRoom
-					&& lRoom.hasLeftWall(direction)) {
-					fillWall(convX(-lr, sizeNear), convY(0, sizeNear)
-						, convX(-lr, sizeNear), convY(0, sizeNear)+sizeNear-1
-						, convX(-lr, sizeAway), convY(0, sizeAway)+sizeAway-1
-						, convX(-lr, sizeAway), convY(0, sizeAway)
-						, distance * 2 + lr);
+						if (room) {
+							showSideWall();
+							showFloorCeil();
+						}
+						function showSideWall() {
+							if (blr >= 0
+								&& room.hasRightWall(direction)) {
+								fillWall(convX(lr+1, sizeNear), convY(bdf, sizeNear)
+									, convX(lr+1, sizeNear), convY(bdf, sizeNear)+sizeNear-1
+									, convX(lr+1, sizeAway), convY(bdf, sizeAway)+sizeAway-1
+									, convX(lr+1, sizeAway), convY(bdf, sizeAway)
+									, distance * 2 + lr + df);
+							}
+							if (blr <= 0
+								&& room.hasLeftWall(direction)) {
+								fillWall(convX(-lr, sizeNear), convY(bdf, sizeNear)
+									, convX(-lr, sizeNear), convY(bdf, sizeNear)+sizeNear-1
+									, convX(-lr, sizeAway), convY(bdf, sizeAway)+sizeAway-1
+									, convX(-lr, sizeAway), convY(bdf, sizeAway)
+									, distance * 2 + lr + df);
+							}
+						}
+						function showFloorCeil() {
+							if (bdf >= 0
+								&& room.hasFloor) {
+								fillWall(convX(blr, sizeNear), convY(df+1, sizeNear)
+									, convX(blr, sizeNear)+sizeNear-1, convY(df+1, sizeNear)
+									, convX(blr, sizeAway)+sizeAway-1, convY(df+1, sizeAway)
+									, convX(blr, sizeAway), convY(df+1, sizeAway)
+									, distance * 2 + lr + df);
+							}
+							if (bdf<= 0
+								&& room.hasCeil) {
+								fillWall(convX(blr, sizeNear), convY(df, sizeNear)
+									, convX(blr, sizeNear)+sizeNear-1, convY(df, sizeNear)
+									, convX(blr, sizeAway)+sizeAway-1, convY(df, sizeAway)
+									, convX(blr, sizeAway), convY(df, sizeAway)
+									, distance * 2 + lr + df);
+							}
+						}
+					}
 				}
 			}
 		}

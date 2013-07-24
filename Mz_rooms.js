@@ -33,9 +33,9 @@ Mz.Direction = {
 	}
 }
 
-Mz.Room = function(northWall, southWall, eastWall, westWall) {
-	this.hasFloor = true;
-	this.hasCeil = true;
+Mz.Room = function(northWall, southWall, eastWall, westWall, floor, ceil) {
+	this.hasFloor = floor;
+	this.hasCeil = ceil;
 	this.hasNearWall = function(direction) {
 		return (direction == Mz.Direction.North && southWall)
 			|| (direction == Mz.Direction.South && northWall)
