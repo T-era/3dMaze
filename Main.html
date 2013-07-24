@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="Shift-JIS">
+		<script type="text/javascript">
+(function() {
+	var canvas;
+	var context;
+	Mz = {
+		here: {
+			x: 0,
+			y: 0,
+			z: 0,
+		},
+		direction: null,
+		onLoad: function() {
+			canvas = document.getElementById("main");
+			context = canvas.getContext("2d");
+			this.direction = Mz.Direction.South;
+
+			this.drawAll(canvas, context);
+			window.addEventListener("keydown", this.keyDown, false)
+		},
+		keyDown: function(arg) {
+			switch (arg.keyCode) {
+				case 37:
+					Mz.direction = Mz.direction == Mz.Direction.North ? Mz.Direction.West
+								 : Mz.direction == Mz.Direction.South ? Mz.Direction.East
+								 : Mz.direction == Mz.Direction.East ? Mz.Direction.North
+								 : Mz.direction == Mz.Direction.West ? Mz.Direction.South
+								 : null;
+					Mz.drawAll(canvas, context);
+					break;
+				case 39:
+					Mz.direction = Mz.direction == Mz.Direction.North ? Mz.Direction.East
+								 : Mz.direction == Mz.Direction.South ? Mz.Direction.West
+								 : Mz.direction == Mz.Direction.East ? Mz.Direction.South
+								 : Mz.direction == Mz.Direction.West ? Mz.Direction.North
+								 : null;
+					Mz.drawAll(canvas, context);
+					break;
+				case 38:
+					var p = Mz.here;
+					var next = { x: p.x, y: p.y, z: p.z - 1 };
+					if (Mz.Field.at(next)) {
+						Mz.here = next;
+					}
+					Mz.drawAll(canvas, context);
+					break;
+				case 40:
+					var p = Mz.here;
+					var next = { x: p.x, y: p.y, z: p.z + 1 };
+					if (Mz.Field.at(next)) {
+						Mz.here = next;
+					}
+					Mz.drawAll(canvas, context);
+					break;
+				case 32:
+					var current = Mz.here;
+					var d = Mz.direction;
+					if (Mz.Field.at(current)
+						&& Mz.Field.at(current).hasAwayWall(d)) {
+						alert("Oops!");
+					} else {
+						Mz.here = d.d(current);
+						Mz.drawAll(canvas, context);
+					}
+					break;
+			}
+		}
+	}
+})();
+		</script>
+		<script type="text/javascript" src="Mz_rooms.js" ></script>
+		<script type="text/javascript" src="Mz_field.js"></script>
+		<script type="text/javascript" src="Mz_draw.js"></script>
+	</head>
+	<body onload="Mz.onLoad();">
+		<canvas id="main"></canvas>
+	</body>
+</html>
