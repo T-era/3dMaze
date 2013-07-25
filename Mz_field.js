@@ -17,6 +17,7 @@ Mz.Field.at = function(pos) {
 	var x = pos.x;
 	var y = pos.y;
 	var z = pos.z;
+
 	if (z < 0 || x < 0 || y < 0
 		|| z >= this.length || y >= this[z].length || x >= this[z][y].length) {
 		return null;
