@@ -10,7 +10,7 @@
 		here: {
 			x: 0,
 			y: 0,
-			z: 0,
+			z: 2,
 		},
 		direction: null,
 		onLoad: function() {
@@ -40,32 +40,30 @@
 					Mz.drawAll(canvas, context);
 					break;
 				case 38:
-					var p = Mz.here;
-					var next = { x: p.x, y: p.y, z: p.z - 1 };
-					if (Mz.Field.at(next)) {
-						Mz.here = next;
-					}
-					Mz.drawAll(canvas, context);
+					moveTo(function(room) { return room.hasCeil; }
+						, function(pos) { return { x: pos.x, y: pos.y, z: pos.z - 1 }; });
 					break;
 				case 40:
-					var p = Mz.here;
-					var next = { x: p.x, y: p.y, z: p.z + 1 };
+					moveTo(function(room) { return room.hasFloor; }
+						, function(pos) { return { x: pos.x, y: pos.y, z: pos.z + 1 }; });
+					break;
+				case 32:
+					moveTo(function(room) { return room.hasAwayWall(Mz.direction); }
+						, function(pos) { return Mz.direction.d(pos); });
+					break;
+			}
+			function moveTo(checker, move) {
+				var p = Mz.here;
+				var room = Mz.Field.at(p);
+				if (room && checker(room)) {
+					alert("Oops!");
+				} else {
+					var next = move(p);
 					if (Mz.Field.at(next)) {
 						Mz.here = next;
 					}
 					Mz.drawAll(canvas, context);
-					break;
-				case 32:
-					var current = Mz.here;
-					var d = Mz.direction;
-					if (Mz.Field.at(current)
-						&& Mz.Field.at(current).hasAwayWall(d)) {
-						alert("Oops!");
-					} else {
-						Mz.here = d.d(current);
-						Mz.drawAll(canvas, context);
-					}
-					break;
+				}
 			}
 		}
 	}
