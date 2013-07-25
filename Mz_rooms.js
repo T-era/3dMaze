@@ -32,11 +32,15 @@ Mz.Direction = {
 		}
 	}
 }
+Mz.Room = function(walls, baseColor) {
+	this.baseColor = baseColor;
+	this.hasFloor = Math.floor(walls/16) % 2;
+	this.hasCeil = Math.floor(walls/32) % 2;
 
-Mz.Room = function(northWall, southWall, eastWall, westWall, floor, ceil) {
-	this.baseColor = { r: 250, g: 250, b: 255 };
-	this.hasFloor = floor;
-	this.hasCeil = ceil;
+	var northWall = Math.floor(walls) % 2;
+	var southWall = Math.floor(walls/2) % 2;
+	var eastWall = Math.floor(walls/4) % 2;
+	var westWall = Math.floor(walls/8) % 2;
 	this.hasNearWall = function(direction) {
 		return (direction == Mz.Direction.North && southWall)
 			|| (direction == Mz.Direction.South && northWall)

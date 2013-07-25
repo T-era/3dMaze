@@ -1,27 +1,52 @@
-Mz.Field = [
-[
-	[new Mz.Room(true, false, false, true, false, true), new Mz.Room(true, false, false, false, true, true), new Mz.Room(true, false, false, false, true, true), new Mz.Room(true, false, false, false, true, true), new Mz.Room(true, false, true, false, true, true)],
-	[new Mz.Room(false, false, false, true, true, true), new Mz.Room(false, false, false, false, true, true), new Mz.Room(false, false, false, false, true, true), new Mz.Room(false, false, false, false, true, true), new Mz.Room(false, false, true, false, true, true)],
-	[new Mz.Room(false, false, false, true, true, true), new Mz.Room(false, false, false, false, true, true), new Mz.Room(false, false, false, false, false, true), new Mz.Room(false, false, false, false, true, true), new Mz.Room(false, false, true, false, true, true)],
-	[new Mz.Room(false, false, false, true, true, true), new Mz.Room(false, false, false, false, true, true), new Mz.Room(false, false, false, false, true, true), new Mz.Room(false, false, false, false, true, true), new Mz.Room(false, false, true, false, true, true)],
-	[new Mz.Room(false, true, false, true, true, true), new Mz.Room(false, true, false, false, true, true), new Mz.Room(false, true, false, false, true, true), new Mz.Room(false, true, false, false, true, true), new Mz.Room(false, true, true, false, true, true)]
-],
-[
-	[new Mz.Room(true, false, false, true, true, false), new Mz.Room(true, true, false, false, true, true), new Mz.Room(true, false, false, false, true, true), new Mz.Room(true, true, true, false, true, true)],
-	[new Mz.Room(false, true, true, true, true, true), new Mz.Room(true, true, false, true, true, true), new Mz.Room(false, false, false, false, true, true), new Mz.Room(true, false, true, false, true, true)],
-	[new Mz.Room(true, true, false, true, true, true), new Mz.Room(true, false, false, false, true, true), new Mz.Room(false, false, true, false, true, false), new Mz.Room(false, true, true, true, true, true)],
-	[new Mz.Room(true, true, false, true, true, true), new Mz.Room(false, true, true, false, true, true), new Mz.Room(false, true, false, true, true, true), new Mz.Room(true, true, true, false, true, true)]
-]
-];
-Mz.Field.at = function(pos) {
-	var x = pos.x;
-	var y = pos.y;
-	var z = pos.z;
+(function() {
+	var floor1 = { r: 250, g: 250, b: 255 };
+	var floor2 = { r: 250, g: 250, b: 253 };
+	var floor3 = { r: 250, g: 250, b: 251 };
+	var bToD = function(str) {
+		var strLen = str.length;
+		return bToDIn(0);
+		function bToDIn(rank) {
+			if (rank >= strLen) return 0;
+			var s = str.charAt(rank);
+			return (s == "1" ? Math.pow(2, rank - 0) : 0) + bToDIn(rank + 1);
 
-	if (z < 0 || x < 0 || y < 0
-		|| z >= this.length || y >= this[z].length || x >= this[z][y].length) {
-		return null;
-	} else {
-		return this[z][y][x];
-	}
-};
+		}
+	};
+	var f = function(w, c) { return new Mz.Room(bToD(w), c); };
+	var f1 = function(w) { return f(w, floor1); };
+	var f2 = function(w) { return f(w, floor2); };
+	var f3 = function(w) { return f(w, floor3); };
+	Mz.Field = [
+		[
+			[f3("101101"), f3("110111"), f3("101011"), f3("110111"), f3("101011")],
+			[f3("010111"), f3("101011"), f3("010111"), f3("101011"), f3("011101")],
+			[f3("000111"), f3("111001"), f3("100101"), f3("010011"), f3("101011")],
+			[f3("000111"), f3("111001"), f3("011111"), f3("100101"), f3("011011")],
+			[f3("011101"), f3("100101"), f3("110011"), f3("010011"), f3("111011")]
+		], [
+			[f2("101110"), f2("101111"), f2("110101"), f2("110011"), f2("111001")],
+			[f2("010111"), f2("011001"), f2("110101"), f2("101011"), f2("111100")],
+			[f2("100101"), f2("101001"), f2("101100"), f2("010111"), f2("101011")],
+			[f2("010111"), f2("011010"), f2("010111"), f2("111010"), f2("001111")],
+			[f2("111100"), f2("110110"), f2("110011"), f2("110011"), f2("011011")]
+		], [
+			[f("100111", { r: 240, g: 255, b: 255 }), f1("100011"), f1("111010"), f1("101111"), f1("101110")],
+			[f1("000111"), f1("011010"), f1("110110"), f1("001011"), f1("011110")],
+			[f1("011110"), f1("101110"), f1("101110"), f1("010111"), f1("101011")],
+			[f1("110111"), f1("001011"), f1("001111"), f1("100110"), f1("011011")],
+			[f1("111110"), f1("010111"), f1("011011"), f1("010111"), f("111011", { r: 255, g: 255, b: 240 })]
+		]
+	];
+	Mz.Field.at = function(pos) {
+		var x = pos.x;
+		var y = pos.y;
+		var z = pos.z;
+
+		if (z < 0 || x < 0 || y < 0
+			|| z >= this.length || y >= this[z].length || x >= this[z][y].length) {
+			return null;
+		} else {
+			return this[z][y][x];
+		}
+	};
+})();
