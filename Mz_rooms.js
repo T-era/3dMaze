@@ -34,6 +34,7 @@ Mz.Direction = {
 }
 
 Mz.Room = function(northWall, southWall, eastWall, westWall, floor, ceil) {
+	this.baseColor = { r: 250, g: 250, b: 255 };
 	this.hasFloor = floor;
 	this.hasCeil = ceil;
 	this.hasNearWall = function(direction) {

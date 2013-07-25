@@ -1,15 +1,15 @@
 Mz.Field = [
 [
-	[new Mz.Room(true, false, false, true, false, false), new Mz.Room(true, false, false, false, true, true), new Mz.Room(true, false, false, false, true, true), new Mz.Room(true, false, false, false, true, true), new Mz.Room(true, false, true, false, true, true)],
+	[new Mz.Room(true, false, false, true, false, true), new Mz.Room(true, false, false, false, true, true), new Mz.Room(true, false, false, false, true, true), new Mz.Room(true, false, false, false, true, true), new Mz.Room(true, false, true, false, true, true)],
 	[new Mz.Room(false, false, false, true, true, true), new Mz.Room(false, false, false, false, true, true), new Mz.Room(false, false, false, false, true, true), new Mz.Room(false, false, false, false, true, true), new Mz.Room(false, false, true, false, true, true)],
-	[new Mz.Room(false, false, false, true, true, true), new Mz.Room(false, false, false, false, true, true), new Mz.Room(false, false, false, false, true, true), new Mz.Room(false, false, false, false, true, true), new Mz.Room(false, false, true, false, true, true)],
+	[new Mz.Room(false, false, false, true, true, true), new Mz.Room(false, false, false, false, true, true), new Mz.Room(false, false, false, false, false, true), new Mz.Room(false, false, false, false, true, true), new Mz.Room(false, false, true, false, true, true)],
 	[new Mz.Room(false, false, false, true, true, true), new Mz.Room(false, false, false, false, true, true), new Mz.Room(false, false, false, false, true, true), new Mz.Room(false, false, false, false, true, true), new Mz.Room(false, false, true, false, true, true)],
 	[new Mz.Room(false, true, false, true, true, true), new Mz.Room(false, true, false, false, true, true), new Mz.Room(false, true, false, false, true, true), new Mz.Room(false, true, false, false, true, true), new Mz.Room(false, true, true, false, true, true)]
 ],
 [
-	[new Mz.Room(true, false, false, true, false, false), new Mz.Room(true, true, false, false, true, true), new Mz.Room(true, false, false, false, true, true), new Mz.Room(true, true, true, false, true, true)],
+	[new Mz.Room(true, false, false, true, true, false), new Mz.Room(true, true, false, false, true, true), new Mz.Room(true, false, false, false, true, true), new Mz.Room(true, true, true, false, true, true)],
 	[new Mz.Room(false, true, true, true, true, true), new Mz.Room(true, true, false, true, true, true), new Mz.Room(false, false, false, false, true, true), new Mz.Room(true, false, true, false, true, true)],
-	[new Mz.Room(true, true, false, true, true, true), new Mz.Room(true, false, false, false, true, true), new Mz.Room(false, false, true, false, true, true), new Mz.Room(false, true, true, true, true, true)],
+	[new Mz.Room(true, true, false, true, true, true), new Mz.Room(true, false, false, false, true, true), new Mz.Room(false, false, true, false, true, false), new Mz.Room(false, true, true, true, true, true)],
 	[new Mz.Room(true, true, false, true, true, true), new Mz.Room(false, true, true, false, true, true), new Mz.Room(false, true, false, true, true, true), new Mz.Room(true, true, true, false, true, true)]
 ]
 ];

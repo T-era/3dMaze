@@ -24,29 +24,7 @@ Mz.drawAll = function(canvas, context) {
 			if (distance < range) {
 				showRangeAt(distance + 1, d(pos));
 			}
-			showAwayWalls(0, pos);
 			showWalls(0, pos);
-
-			function showAwayWalls(lr) {
-				if (lr < range) {
-					showAwayWalls(lr + 1);
-				}
-				var rRoom = Mz.Field.at(right(pos, lr));
-				var lRoom = Mz.Field.at(right(pos, -lr));
-				showAWall(rRoom, lr); if (lr != 0) showAWall(lRoom, -lr);
-				function showAWall(room, blr) {
-					if (room
-						&& room.hasAwayWall(direction)) {
-						var p1x = convX(blr, sizeAway);
-						var p1y = convY(0, sizeAway);
-						fillWall(p1x, p1y
-							, p1x+sizeAway-1, p1y
-							, p1x+sizeAway-1, p1y+sizeAway-1
-							, p1x, p1y+sizeAway-1
-							, distance * 2 + 1 + lr);
-					}
-				}
-			}
 
 			function showWalls(lr) {
 				if (lr < range) {
@@ -58,10 +36,41 @@ Mz.drawAll = function(canvas, context) {
 					if (df < range) {
 						showWalls2(df + 1);
 					}
+					showAwayWalls(lr);
 					showAllWalls(lr, df);
 					showAllWalls(-lr, df);
 					showAllWalls(lr, -df);
 					showAllWalls(-lr, -df);
+
+					function showAwayWalls(lr) {
+						if (lr < range) {
+							showAwayWalls(lr + 1);
+						}
+						var r = right(pos, lr);
+						var l = right(pos, -lr);
+						showAWall(r, lr); if (lr != 0) showAWall(l, -lr);
+						function showAWall(pos, blr) {
+							var tRoom = Mz.Field.at({ x: pos.x, y: pos.y, z: pos.z - df });
+							showX(tRoom, df);
+							if (df != 0) {
+								var bRoom = Mz.Field.at({ x: pos.x, y: pos.y, z: pos.z + df });
+								showX(bRoom, -df);
+							}
+							function showX(room, bdf) {
+								if (room
+									&& room.hasAwayWall(direction)) {
+									var p1x = convX(blr, sizeAway);
+									var p1y = convY(bdf, sizeAway);
+									fillWall(p1x, p1y
+										, p1x+sizeAway-1, p1y
+										, p1x+sizeAway-1, p1y+sizeAway-1
+										, p1x, p1y+sizeAway-1
+										, distance * 2 + 1 + lr + df
+										, room.baseColor);
+								}
+							}
+						}
+					}
 					function showAllWalls(blr, bdf) {
 						function aplyBdf(pos, d) { return { x: pos.x, y: pos.y, z: pos.z + d }; }
 						var room = Mz.Field.at(aplyBdf(right(pos, blr), bdf));
@@ -77,7 +86,8 @@ Mz.drawAll = function(canvas, context) {
 									, convX(lr+1, sizeNear), convY(bdf, sizeNear)+sizeNear-1
 									, convX(lr+1, sizeAway), convY(bdf, sizeAway)+sizeAway-1
 									, convX(lr+1, sizeAway), convY(bdf, sizeAway)
-									, distance * 2 + lr + df);
+									, distance * 2 + lr + df
+									, room.baseColor);
 							}
 							if (blr <= 0
 								&& room.hasLeftWall(direction)) {
@@ -85,7 +95,8 @@ Mz.drawAll = function(canvas, context) {
 									, convX(-lr, sizeNear), convY(bdf, sizeNear)+sizeNear-1
 									, convX(-lr, sizeAway), convY(bdf, sizeAway)+sizeAway-1
 									, convX(-lr, sizeAway), convY(bdf, sizeAway)
-									, distance * 2 + lr + df);
+									, distance * 2 + lr + df
+									, room.baseColor);
 							}
 						}
 						function showFloorCeil() {
@@ -95,7 +106,8 @@ Mz.drawAll = function(canvas, context) {
 									, convX(blr, sizeNear)+sizeNear-1, convY(df+1, sizeNear)
 									, convX(blr, sizeAway)+sizeAway-1, convY(df+1, sizeAway)
 									, convX(blr, sizeAway), convY(df+1, sizeAway)
-									, distance * 2 + lr + df);
+									, distance * 2 + lr + df
+									, room.baseColor);
 							}
 							if (bdf<= 0
 								&& room.hasCeil) {
@@ -103,7 +115,8 @@ Mz.drawAll = function(canvas, context) {
 									, convX(blr, sizeNear)+sizeNear-1, convY(df, sizeNear)
 									, convX(blr, sizeAway)+sizeAway-1, convY(df, sizeAway)
 									, convX(blr, sizeAway), convY(df, sizeAway)
-									, distance * 2 + lr + df);
+									, distance * 2 + lr + df
+									, room.baseColor);
 							}
 						}
 					}
@@ -112,12 +125,14 @@ Mz.drawAll = function(canvas, context) {
 		}
 	};
 
-	function fillWall(x1, y1, x2, y2, x3, y3, x4, y4, darkness) {
+	function fillWall(x1, y1, x2, y2, x3, y3, x4, y4, darkness, baseColor) {
 		context.beginPath();
-		context.strokeStyle = "#b0b0b0";
-		var color = 255 - (1+darkness) * 3;
-		color = color < 0 ? 0 : color;
-		context.fillStyle = "#" + color.toString(16)+color.toString(16)+color.toString(16);//"#ffffff";
+		context.strokeStyle = "#c0c0c0";
+		var x = Math.pow(0.998, darkness);
+		var r = toColCode(baseColor.r * x);
+		var g = toColCode(baseColor.g * x);
+		var b = toColCode(baseColor.b * x);
+		context.fillStyle = "#" + r + g + b;
 		context.moveTo(x1, y1);
 		context.lineTo(x2, y2);
 		context.lineTo(x3, y3);
@@ -125,8 +140,9 @@ Mz.drawAll = function(canvas, context) {
 		context.lineTo(x1, y1);
 		context.stroke();
 		context.fill();
-if (darkness < 0) {
-	alert(darkness);
-}
+
+		function toColCode(arg) {
+			return Math.floor(arg).toString(16);
+		}
 	}
 }
