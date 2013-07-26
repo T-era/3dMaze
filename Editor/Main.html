@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="Shift-JIS">
+		<script type="text/javascript">
+MzE = new (function(){
+	var doms = {};
+	this.onLoad = function() {
+		doms.initDiv = document.getElementById("init");
+		doms.editDiv = document.getElementById("edit");
+		doms.floorSelector = document.getElementById("floorSelect");
+		doms.rInput = document.getElementById("rIn");
+		doms.gInput = document.getElementById("gIn");
+		doms.bInput = document.getElementById("bIn");
+		doms.canvas = document.getElementById("main");
+		doms.srcText = document.getElementById("src");
+
+		doms.editDiv.style.display = "none";
+	}
+	this.toEdit = function() {
+		var xSize = document.getElementById("xSizeIn").value * 1;
+		var ySize = document.getElementById("ySizeIn").value * 1;
+		var zSize = document.getElementById("zSizeIn").value * 1;
+		if (! xSize || ! ySize || ! zSize) {
+			alert("er");
+		} else {
+			doms.initDiv.style.display = "none";
+			doms.editDiv.style.display = "";
+
+			this.editMode = new MzE.EditMode(doms, xSize, ySize, zSize);
+		}
+	}
+})();
+		</script>
+		<script type="text/javascript" src="MzE_EditMode.js" ></script>
+		<script type="text/javascript" src="MzE_EditCanvas.js" ></script>
+		<script type="text/javascript" src="MzE_SourceIO.js" ></script>
+	</head>
+	<body onload="MzE.onLoad();">
+		<div id="init">
+			X:<input type="number" id="xSizeIn" ></input>
+			Y:<input type="number" id="ySizeIn" />
+			Z:<input type="number" id="zSizeIn" />
+			<button type=button" onclick="MzE.toEdit()">-&gt;</button>
+		</div>
+		<div id="edit">
+			<select id="floorSelect" onchange="MzE.editMode.selectFloor()"></select>
+			<div id="colorPointer">
+				R:<input type="number" id="rIn" onchange="MzE.editMode.inputColor()" />
+				G:<input type="number" id="gIn" onchange="MzE.editMode.inputColor()" />
+				B:<input type="number" id="bIn" onchange="MzE.editMode.inputColor()" />
+			</div>
+			<canvas id="main"></canvas>
+			<button type="button" onclick="MzE.editMode.exp()">Export</button>
+			<button type="button" onclick="MzE.editMode.inp()">Inport</button>
+			<textarea id="src"></textarea>
+		</div>
+	</body>
+</html>
