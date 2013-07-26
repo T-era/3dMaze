@@ -30,37 +30,20 @@ Mz.drawAll = function(canvas, context) {
 			)
 		);
 		function spreadRange(f) {
-			execADistance(0);
-
-			function execADistance(distance) {
-				if (distance < range) {
-					execADistance(distance + 1);
-				}
-
+			for (var distance = range; distance >= 0; distance --) {
 				f(distance);
 			}
 		}
 		function  spreadWidth(f) {
 			return function(distance) {
-				exec(0);
-
-				function exec(lr) {
-					if (lr < range) {
-						exec(lr + 1);
-					}
-
+				for (var lr = range; lr >= 0; lr --) {
 					f(distance, lr);
 				}
 			}
 		}
 		function spreadHeight(f) {
 			return function(distance, lr) {
-				exec(0);
-
-				function exec(df) {
-					if (df < range) {
-						exec(df + 1);
-					}
+				for (var df = range; df >= 0; df --) {
 					f(distance, lr, df);
 				}
 			}
@@ -134,7 +117,7 @@ Mz.drawAll = function(canvas, context) {
 							, convX(blr, sizeNear)+sizeNear-1, convY(bdf+1, sizeNear)
 							, convX(blr, sizeAway)+sizeAway-1, convY(bdf+1, sizeAway)
 							, convX(blr, sizeAway), convY(bdf+1, sizeAway)
-							, distance * 2 + lr + df
+							, 8 + distance * 2 + lr + df
 							, room.baseColor);
 					}
 				}
@@ -144,7 +127,7 @@ Mz.drawAll = function(canvas, context) {
 							, convX(blr, sizeNear)+sizeNear-1, convY(bdf, sizeNear)
 							, convX(blr, sizeAway)+sizeAway-1, convY(bdf, sizeAway)
 							, convX(blr, sizeAway), convY(bdf, sizeAway)
-							, distance * 2 + lr + df
+							, 8 + distance * 2 + lr + df
 							, room.baseColor);
 					}
 				}
@@ -155,7 +138,7 @@ Mz.drawAll = function(canvas, context) {
 	function fillWall(x1, y1, x2, y2, x3, y3, x4, y4, darkness, baseColor) {
 		context.beginPath();
 		context.strokeStyle = "#c0c0c0";
-		var x = Math.pow(0.98, darkness);
+		var x = Math.pow(0.90, darkness);
 		var r = toColCode(baseColor.r * x);
 		var g = toColCode(baseColor.g * x);
 		var b = toColCode(baseColor.b * x);
