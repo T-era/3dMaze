@@ -1,0 +1,32 @@
+module Mz {
+  export interface IRoom {
+    North: boolean;
+    South: boolean;
+    East: boolean;
+    West: boolean;
+    Ceil: boolean;
+    Floor: boolean;
+    Color: Common.Color;
+  }
+  export interface DrawingRoot {
+		direction :Direction;
+		here :Position;
+    onLoad();
+    enable(boolean);
+	}
+  export interface FullDirection {
+    North: Direction;
+    South: Direction;
+    East: Direction;
+    West: Direction;
+  }
+  export interface Direction {
+    d(Position) :Position;
+    right(Position, number) :Position;
+  }
+	export interface Position {
+		x:number;
+		y:number;
+		z:number;
+	}
+}

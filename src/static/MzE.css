@@ -1,14 +1,57 @@
-.MzEditor {
-	width: 100%;
-	height: 300px;
-	overflow: auto;
+.mze_dialog {
 }
+.mze_all {
+	height: 100%;
+	width: 100%;
+	position: relative;
+}
+.mze_main {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	bottom: 0px;
+	right: 300px;
+	background: #fffafa;
+}
+.mze_sidebar {
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	width: 300px;
+	right: 0px;
+}
+.mze_side_top {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 200px;
+	right: 0px;
+}
+.mze_side_mid {
+	position: absolute;
+	top: 200px;
+	left: 0px;
+	right: 0px;
+	height: 50px;
+}
+.mze_side_btm {
+	position: absolute;
+	top: 250px;
+	left: 0px;
+	bottom: 0px;
+	right: 0px;
+}
+
 .MzRoom {
-	border: 2px solid #ccc;
+	border: 2px solid;
+	border-color: #aaa;
 	position: relative;
 	width: 100px;
 	height: 100px;
 	float: left;
+}
+.MzRoom.Selected {
+	border-color: #ff0;
 }
 .MzRoomRow {
 	height: 100px;
@@ -25,7 +68,7 @@
 	background-color: #cff;
 }
 .MzWallWE {
-	top: 10%; 
+	top: 10%;
 	width: 10%;
 	height: 80%;
 }
@@ -99,4 +142,11 @@
 }
 .MzWallEast-black {
 	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAeCAYAAADzXER0AAAAJ0lEQVQ4jWNgGAUw8B8LJlsj0QaMah7VPKp5VPMAa8ZlwChgYGAAAFAglWum7NvpAAAAAElFTkSuQmCC");
+}
+
+
+.MzE_floors_color{
+	width: 30px;
+	height: 14px;
+	border: 1px solid black;
 }

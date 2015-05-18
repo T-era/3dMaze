@@ -1,1 +1,0 @@
-(function() {var floor0 = { r: 255, g: 255, b: 255 };var f0 = function(w) { return new Mz.Room(w, floor0); };Mz.Field = [[[f0(56)]]];Mz.Field.at = function(pos) {var x = pos.x;var y = pos.y;var z = pos.z;if (z < 0 || x < 0 || y < 0 || z >= this.length || y >= this[z].length || x >= this[z][y].length) {return null;} else {return this[z][y][x];}};})();

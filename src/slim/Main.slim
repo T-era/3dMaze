@@ -1,0 +1,51 @@
+doctype html
+html
+  head
+    meta charset="UTF-8"
+    link rel="stylesheet" type="text/css" href="Mz.css"
+    link rel="stylesheet" type="text/css" href="MzE.css"
+    link rel="stylesheet" type="text/css" href="jquery-ui.min.css"
+    link rel="stylesheet" type="text/css" href="my_dialog_style.css"
+    script type="text/javascript" src="http://code.jquery.com/jquery-1.11.2.min.js"
+    script type="text/javascript" src="jquery-ui.min.js"
+    script type="text/javascript" src="common.js"
+    script type="text/javascript" src="uiparts.js"
+    script type="text/javascript" src="mz.js"
+    script type="text/javascript" src="mzedit.js"
+    script type="text/javascript" src="mzinit.js"
+    script type="text/javascript" src="mz_main.js"
+  body
+    canvas id="main" class="main_canvas"
+    div class="main_control"
+      div id="main_new_button" class="main_new_button"
+      div id="saved_maps" class="main_selector"
+    div id="baseSettngs"
+      ul class="no_mark"
+        li
+          label for="nameIn"
+            | Name
+          input type="text" id="nameIn"
+        li
+          label for="xSizeIn"
+            | X
+          input type="number" id="xSizeIn"
+        li
+          label for="ySizeIn"
+            | Y
+          input type="number" id="ySizeIn"
+        li
+          label for="zSizeIn"
+            | Z
+          input type="number" id="zSizeIn"
+    div id="edit" class="mze_dialog"
+      div class="mze_all"
+        div id="output" class="mze_main"
+        div class="mze_sidebar"
+          div class="mze_side_top"
+            div id="floorSelect"
+          div class="mze_side_mid"
+            input type="checkbox" id="room_color_switch"
+            label for="room_color_switch" | この部屋の壁の色
+            div id="room_color" style="background:#aaa; width:50px; height:50px;"
+          div class="mze_side_btm"
+            | event(s)
