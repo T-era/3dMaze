@@ -1,8 +1,10 @@
 /// <reference path="../../lib/mzinit.d.ts" />
 /// <reference path="mode.ts" />
+/// <reference path="room_color.ts" />
 
 module MzE {
 	var editDialog = null;
+
 	$(function() {
 		editDialog = $("#edit").dialog({
 			width: "90%",

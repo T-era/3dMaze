@@ -12,6 +12,7 @@
 	bottom: 0px;
 	right: 300px;
 	background: #fffafa;
+	overflow: auto;
 }
 .mze_sidebar {
 	position: absolute;
@@ -24,19 +25,19 @@
 	position: absolute;
 	top: 0px;
 	left: 0px;
-	height: 200px;
+	bottom: 130px;
 	right: 0px;
 }
 .mze_side_mid {
 	position: absolute;
-	top: 200px;
+	bottom: 30px;
 	left: 0px;
 	right: 0px;
-	height: 50px;
+	height: 100px;
 }
 .mze_side_btm {
 	position: absolute;
-	top: 250px;
+	height: 30px;
 	left: 0px;
 	bottom: 0px;
 	right: 0px;
@@ -54,8 +55,7 @@
 	border-color: #ff0;
 }
 .MzRoomRow {
-	height: 100px;
-	clear: left;
+	height: 104px;
 }
 .MzWall {
 	position: absolute;
@@ -68,25 +68,25 @@
 	background-color: #cff;
 }
 .MzWallWE {
-	top: 10%;
-	width: 10%;
-	height: 80%;
+	top: 20%;
+	width: 20%;
+	height: 60%;
 }
 .MzWallNS {
-	width: 80%;
-	height: 10%;
-	left: 10%;
-}
-.MzWallCF {
 	width: 60%;
-	height: 30%;
+	height: 20%;
 	left: 20%;
 }
+.MzWallCF {
+	width: 40%;
+	height: 25%;
+	left: 30%;
+}
 .MzWallWest { background-image: none; }
-.MzWallEast { background-image: none; left: 90%; }
+.MzWallEast { background-image: none; left: 80%; }
 .MzWallNorth { background-image: none; }
-.MzWallSouth { background-image: none; top: 90%; }
-.MzWallCeil { background-image: none; top: 20%; }
+.MzWallSouth { background-image: none; top: 80%; }
+.MzWallCeil { background-image: none; top: 25%; }
 .MzWallFloor { background-image: none; top: 50%; }
 .MzWallCeil-red {
 	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAPCAYAAADzun+cAAAAMElEQVQ4jWNgGAWjAAf4z8Dw/z8Dw/+BdgftAMyHhPBAu5N8QKwPh28IjIJRQCoAAA6XO8UQmDESAAAAAElFTkSuQmCC");

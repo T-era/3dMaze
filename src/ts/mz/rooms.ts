@@ -38,6 +38,7 @@ module Mz {
 	}
 	export class Room {
 		color :Common.Color;
+		events :string[];
 		hasFloor :boolean;
 		hasCeil :boolean;
 
@@ -46,7 +47,7 @@ module Mz {
 		eastWall :boolean;
 		westWall :boolean;
 
-		constructor(walls :number, color :Common.Color) {
+		constructor(walls :number, color :Common.Color, events :string[]) {
 			this.color = color;
 			this.hasFloor = Math.floor(walls/16) % 2 != 0;
 			this.hasCeil = Math.floor(walls/32) % 2 != 0;
@@ -55,6 +56,7 @@ module Mz {
 			this.southWall = Math.floor(walls/2) % 2 != 0;
 			this.eastWall = Math.floor(walls/4) % 2 != 0;
 			this.westWall = Math.floor(walls/8) % 2 != 0;
+			this.events = events;
 		}
 		hasNearWall(direction :Direction) :boolean {
 			return (direction == Mz.Direction.North && this.southWall)

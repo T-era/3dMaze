@@ -1,14 +1,12 @@
 /// <reference path="../../lib/common.d.ts" />
 /// <reference path="rooms.ts" />
 
-// saved data: { baseColors: <bc>, fields: <f>, events: <ev> }
-// for editor: (same)
 module Mz {
-	var template = '{ "baseColors": ?<bc>, "fields": ?<f>, "events": ?<ev> }';
+	var template = '{ "baseColors": ?<bc>, "fields": ?<f> }';
 	var baseColorTemplate = '{ "r": ?<r>, "g": ?<g>, "b": ?<b> }';
-	var createRoom :(a:number, b:Common.Color)=>Room
-		= (num, color)=> { return new Room(num, color); };
-	var array :Mz.Room[][][] = [[[createRoom(63, {r:255, g:255, b:255})]]];
+	var createRoom :(a:number, b:Common.Color, c:string[])=>Room
+			= (num, color, events)=> { return new Room(num, color, events); };
+	var array :Mz.Room[][][] = [[[createRoom(63, {r:255, g:255, b:255}, [])]]];
 
 	export var Field = {
 		at: function(pos :Position) :Room {
@@ -21,7 +19,7 @@ module Mz {
 				return array[z][y][x];
 			}
 		},
-		set: function(baseColors :Common.Color[], fields :{num;col}[][][], events) {
+		set: function(baseColors :Common.Color[], fields :{num;col;eve}[][][], events) {
 			array = []
 			for (var z = 0, zMax = fields.length; z < zMax; z ++) {
 				var floorColor = baseColors[z];
@@ -34,8 +32,11 @@ module Mz {
 						var color = roomJson.col == null
 								? baseColors[z]
 								: roomJson.col;
+						var events = roomJson.eve == null
+								? []
+								: roomJson.eve;
 
-						line.push(createRoom(num, color));
+						line.push(createRoom(num, color, events));
 					}
 					floor.push(line);
 				}
@@ -60,7 +61,6 @@ module Mz {
 								return listToString<IRoom>(line, roomToString);
 							});
 					}))
-				.replace("?<ev>", "[]"); // Events TODO
 			localStorage[key] = str;
 		},
 		roomFromJson: roomFromJson
@@ -86,10 +86,11 @@ module Mz {
 
 		return JSON.stringify({
 			num: val,
-			col: room.Color
+			col: room.Color,
+			eve: room.Events
 		});
 	}
-	function roomFromJson(obj :{num;col}) :IRoom {
+	function roomFromJson(obj :{num;col;eve}) :IRoom {
 		var num = Number(obj.num);
 
 		return {
@@ -99,7 +100,8 @@ module Mz {
 			West: (num >> 3) % 2 != 0,
 			Floor: (num >> 4) % 2 != 0,
 			Ceil: (num >> 5) % 2 != 0,
-			Color: obj.col
+			Color: obj.col,
+			Events: obj.eve
 		};
 	}
 	function toStringBc(color :Common.Color) :string {

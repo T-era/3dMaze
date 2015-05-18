@@ -8,7 +8,7 @@ module MzE {
 		cols :number;
 		rows :number;
 		floors :number;
-		rooms;
+		rooms :Mz.IRoom[][][];
 		z :number;
 		roomDivs :Room[][];
 		roomPointed :RoomPointedListener;
@@ -50,7 +50,7 @@ module MzE {
 		floor :Floor;
 		dom :JQuery;
 		walls: Wall[];
-		obj;
+		obj :Mz.IRoom;
 
 		constructor(floorObj :Floor, x :number, y :number, z: number, fPointed :RoomPointedListener) {
 			this.floor = floorObj;

@@ -4,9 +4,9 @@
 /// <reference path="mode.ts" />
 
 module MzE {
-	var colorPicker = null;
+	export var colorPicker = null;
 	$(function() {
-		colorPicker = new UIParts.ColorPicker($("<body>"));
+		colorPicker = new UIParts.ColorPicker($("body"));
 	});
 
 	export function FloorSelector(dom, getColorList) :UIParts.ComplexSelect<number> {

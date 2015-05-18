@@ -61,6 +61,7 @@ module Mz {
 		function moveTo(checker, move) {
 			var p = Obj.here;
 			var room = Mz.Field.at(p);
+
 			if (room && checker(room)) {
 				UIParts.Alert("Oops!", "壁がある！");
 			} else {
@@ -69,6 +70,10 @@ module Mz {
 					Obj.here = next;
 				//}
 				Mz.drawAll(Obj, canvas, context);
+
+				room.events.forEach(function(str) {
+					eval(str);
+				});
 			}
 		}
 	}

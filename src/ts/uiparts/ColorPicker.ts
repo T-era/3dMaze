@@ -53,6 +53,7 @@ module UIParts {
 			this.bInput = addColorPointer("B", pointDiv, this.color.b);
 			this.resetColor();
 			this.owner = owner;
+			var that = this;
 
 			function addColorPointer(caption, parent, defValue) {
 				var owner = $("<div>").appendTo(parent);
@@ -64,15 +65,21 @@ module UIParts {
 					.css("width", INPUT_WIDTH + "px")
 					.appendTo(owner)
 					.change(()=> {
-						this.resetColor();
+						that.resetColor();
 					});
 			}
 		}
 		show(current :Common.Color, callback :(Color)=>void) {
 			this.okCallback = callback;
-			this.rInput.val(current.r.toString());
-			this.gInput.val(current.g.toString());
-			this.bInput.val(current.b.toString());
+			if (current) {
+				this.rInput.val(current.r.toString());
+				this.gInput.val(current.g.toString());
+				this.bInput.val(current.b.toString());
+			} else {
+				this.rInput.val("");
+				this.gInput.val("");
+				this.bInput.val("");
+			}
 			this.resetColor();
 			this.owner.dialog("open");
 		}

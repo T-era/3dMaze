@@ -17,12 +17,14 @@ module MzE {
 	var baseColors :Common.Color[];
 	var floorSelector :UIParts.ComplexSelect<number>;
 	var selectedRoom :Room;
+	var roomChangeListeners = [];
 
 	$(function() {
 		$("#MzE_Save").click(function() {
 			Mz.Field.saveToStorage(name, baseColors, fields);
 		});
 		floorSelector = FloorSelector($("#floorSelect"), function() { return baseColors; });
+		roomChangeListeners.push(MzE.roomChangeListener);
 	});
 
 	export interface EditModeType {
@@ -53,7 +55,7 @@ module MzE {
 			}
 			this.reload(tempField, tempColors);
 		}
-		edit(_name :string, tempColors :Common.Color[], fieldStrs :{num;col}[][][]) {
+		edit(_name :string, tempColors :Common.Color[], fieldStrs :{num;col;eve}[][][]) {
 			zSize = fieldStrs.length;
 			ySize = fieldStrs[0].length;
 			xSize = fieldStrs[0][0].length;
@@ -61,7 +63,7 @@ module MzE {
 			var tempField = mapToRoom(fieldStrs);
 			this.reload(tempField, tempColors);
 
-			function mapToRoom(list :{num;col}[][][]) :Mz.IRoom[][][] {
+			function mapToRoom(list :{num;col;eve}[][][]) :Mz.IRoom[][][] {
 				var ret = [];
 				for (var z = 0, zMax = list.length; z < zMax; z ++) {
 					var floor = [];
@@ -93,6 +95,10 @@ module MzE {
 				}
 				room.dom.addClass("Selected");
 				selectedRoom = room;
+				for (var i = 0, max = roomChangeListeners.length; i < max; i ++) {
+					var listener = roomChangeListeners[i];
+					listener(selectedRoom.obj);
+				}
 			});
 
 			baseColors = newBaseColors;

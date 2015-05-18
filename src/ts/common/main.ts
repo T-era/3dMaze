@@ -1,4 +1,11 @@
 module Common {
+  if (! Array.prototype.forEach) {
+    Array.prototype.forEach = function(f :(any)=>void) {
+      for (var i = 0, max = this.length; i < max; i ++) {
+        f(this[i]);
+      }
+    }
+  }
   export class Color {
     r: number;
     g: number;
