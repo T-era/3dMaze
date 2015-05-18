@@ -152,7 +152,8 @@ Mz.drawAll = function(canvas, context) {
 		context.fill();
 
 		function toColCode(arg) {
-			return Math.floor(arg).toString(16);
+			var hexa = Math.floor(arg).toString(16);
+			return ("0" + hexa).substr(-2);
 		}
 	}
 }

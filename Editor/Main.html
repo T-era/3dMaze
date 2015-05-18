@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="Shift-JIS">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="MzE.css"></link>
+		<link rel="stylesheet" type="text/css" href="jquery-ui.min.css"></link>
+		<link rel="stylesheet" type="text/css" href="my_dialog_style.css"></link>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+		<script type="text/javascript" src="jquery-ui.min.js"></script>
 		<script type="text/javascript">
 MzE = new (function(){
 	var doms = {};
@@ -32,16 +37,27 @@ MzE = new (function(){
 	}
 })();
 		</script>
+		<script type="text/javascript" src="MzE_Main.js"></script>
+		<script type="text/javascript" src="MzE_Floor.js"></script>
 		<script type="text/javascript" src="MzE_EditMode.js" ></script>
-		<script type="text/javascript" src="MzE_EditCanvas.js" ></script>
 		<script type="text/javascript" src="MzE_SourceIO.js" ></script>
+		<script type="text/javascript" src="ColorPicker.js" ></script>
+		<script type="text/javascript">
+$(function() {
+	var cp = new ColorPicker($(document.body), function(arg) { alert(arg); });
+	cp.show()
+});
+		</script>
 	</head>
 	<body onload="MzE.onLoad();">
 		<div id="init">
-			X:<input type="number" id="xSizeIn" ></input>
-			Y:<input type="number" id="ySizeIn" />
-			Z:<input type="number" id="zSizeIn" />
-			<button type=button" onclick="MzE.toEdit()">-&gt;</button>
+			<ul>
+				<li>Name:<input type="text" id="nameIn" ></input></li>
+				<li>X:<input type="number" id="xSizeIn" ></input></li>
+				<li>Y:<input type="number" id="ySizeIn" /></li>
+				<li>Z:<input type="number" id="zSizeIn" /></li>
+				<button type="button" onclick="MzE.toEdit()">-&gt;</button>
+			</ul>
 		</div>
 		<div id="edit">
 			<select id="floorSelect" onchange="MzE.editMode.selectFloor()"></select>
@@ -50,7 +66,7 @@ MzE = new (function(){
 				G:<input type="number" id="gIn" onchange="MzE.editMode.inputColor()" />
 				B:<input type="number" id="bIn" onchange="MzE.editMode.inputColor()" />
 			</div>
-			<canvas id="main"></canvas>
+			<div id="output" class="MzEditor" ></div>
 			<button type="button" onclick="MzE.editMode.exp()">Export</button>
 			<button type="button" onclick="MzE.editMode.inp()">Inport</button>
 			<textarea id="src"></textarea>

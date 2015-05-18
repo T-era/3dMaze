@@ -1,0 +1,46 @@
+.main_canvas {
+	width: 800px;
+	height: 400px;
+	float: left;
+}
+.main_control {
+	width: 200px;
+	height: 400px;
+	float: left;
+}
+.delete_button {
+	border: solid 1px #aaa;
+	background: #eee;
+	text-align: center;
+	float:right;
+	width: 20px;
+}
+.main_new_button {
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAcUlEQVRIie3WwQnAMAwDQI2eATqGB+lm7avGlD6cRE5pkUCQ5HOYfAwoIW1rR6YlcCZ0PAvT8R6YivfCNHwEpuCj8DQuWLBgwYL/BWOHdxkcwetcDt8n9buhHn58XwG/MrFPF2Ej/HF6qTd4yxb9T+cEvPuEkMNdt+kAAAAASUVORK5CYII=");
+	width: 30px;
+	height: 30px;
+	background-size: 100% 100%;
+}
+.main_selector {
+	width: 100%;
+	height: 360px;
+}
+.baseSettngs>ul {
+	border: 0px;
+	padding: 10px;
+}
+ul.no_mark {
+	list-style: none;
+}
+li>label:after {
+	content: ":";
+}
+.like_button {
+	border: 0px solid;
+	background: #dfe;
+	border-radius: 5px;
+	font-size: 0.8em;
+}
+.right {
+	float: right;
+}

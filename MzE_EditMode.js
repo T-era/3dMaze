@@ -1,22 +1,27 @@
-MzE.EditMode = function(doms, xSize, ySize, zSize) {
+MzE.EditMode = function(doms, setting) {
+	var xSize = setting.xSize;
+	var ySize = setting.ySize;
+	var zSize = setting.zSize;
+	var name = setting.name;
 	var rooms;
 	var fields;
 	var baseColors;
 
+	$("#EzE_Save").click(function() {
+		localStorage[setting.name] = MzE.SourceIO.ForEval(fields, baseColors);
+	});
+
 	this.selectFloor = function() {
-		var z = doms.floorSelector.value*1;
+		var z = doms.floorSelector.val()*1;
 		rooms.setFloor(z);
 		resetColor();
 
 		function resetColor() {
 			var baseColor = baseColors[z];
-			doms.rInput.value = baseColor.r;
-			doms.gInput.value = baseColor.g;
-			doms.bInput.value = baseColor.b;
 		}
 	};
 	this.inputColor = function() {
-		var z = doms.floorSelector.value;
+		var z = doms.floorSelector.val();
 		var baseColor = baseColors[z];
 		baseColor.r = doms.rInput.value;
 		baseColor.g = doms.gInput.value;
@@ -39,19 +44,18 @@ MzE.EditMode = function(doms, xSize, ySize, zSize) {
 			return list;
 		}
 	}
-	this.reload = function(zSize, newFields, newBaseColors) {
+	this.reload = function(newFields, newBaseColors) {
 		fields = newFields;
 		rooms = new MzE.Rooms(xSize, ySize, zSize, $("#output"), fields);
 
 		baseColors = newBaseColors;
-		for (var i = doms.floorSelector.options.length; i >= 0; i --) {
-			doms.floorSelector.options[i] = null;
-		}
+		doms.floorSelector.children().remove();
+
 		for (var z = 0; z < zSize; z ++) {
-			var opt = document.createElement("option");
-			opt.text = "Floor: B" + z;
-			opt.value = z;
-			doms.floorSelector.options.add(opt);
+			var opt = $("<option>")
+				.text("Floor: B" + z)
+				.val(z)
+				.appendTo(doms.floorSelector);
 		}
 		this.selectFloor();
 	}
@@ -65,7 +69,7 @@ MzE.EditMode = function(doms, xSize, ySize, zSize) {
 		tempField[z] = createField();
 		tempColors[z] = { r: 255, g: 255, b: 255 };
 	}
-	this.reload(zSize, tempField, tempColors);
+	this.reload(tempField, tempColors);
 
 	function createField() {
 		var ret = [];
