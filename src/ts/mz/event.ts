@@ -1,6 +1,18 @@
 /// <reference path="main.ts" />
 
 module Mz {
+  export function fireEvents(list :Event[], pos :Position, d) {
+    fireEventQueue(list);
+
+    function fireEventQueue(queue :Event[]) {
+      if (list.length > 0) {
+        var event = list.shift();
+        event.proc(pos, d, function() {
+          fireEventQueue(list);
+        });
+      }
+    }
+  }
   export function readEvent(arg :string) :Event {
     var parts = arg.split(":");
     var type = parts[0];
@@ -29,7 +41,7 @@ module Mz {
       else if (arg == "w") return Mz.Direction.West;
     }
   }
-  export class Goal {
+  export class Goal implements Event {
     title: string;
     message :string;
 
@@ -37,7 +49,7 @@ module Mz {
       this.title = title;
       this.message = message;
     }
-    proc(pos :Position, d) {
+    proc(pos :Position, d, eventsRemain :Common.Callback) {
       Mz.Obj.enable(false);
       UIParts.Alert(
         messageToShow(this.title, pos, d),
@@ -52,10 +64,14 @@ module Mz {
       this.title = title;
       this.message = message;
     }
-    proc(pos :Position, d) {
+    proc(pos :Position, d, eventsRemain :Common.Callback) {
       UIParts.Alert(
         messageToShow(this.title, pos, d),
-        messageToShow(this.message, pos, d));
+        messageToShow(this.message, pos, d),
+        function(howClose) {
+          howClose();
+          eventsRemain();
+        });
     }
   }
   export class Warp {
@@ -64,7 +80,7 @@ module Mz {
     constructor(to :Position = null) {
       this.jumpTo = to;
     }
-    proc(pos :Position, d) {
+    proc(pos :Position, d, eventsRemain :Common.Callback) {
       var to;
       if (this.jumpTo) {
         to = this.jumpTo;
@@ -78,6 +94,7 @@ module Mz {
       }
       Mz.Obj.here = to;
       Mz.Obj.repaint();
+      eventsRemain();
     }
   }
   export class TurnTable {
@@ -86,7 +103,7 @@ module Mz {
     constructor(dir) {
       this.directionTo = dir;
     }
-    proc(pos :Position, d) {
+    proc(pos :Position, d, eventsRemain :Common.Callback) {
       var dir;
       if (this.directionTo) {
         dir = this.directionTo;
@@ -110,6 +127,7 @@ module Mz {
       }
       Mz.Obj.direction = dir;
       Mz.Obj.repaint();
+      eventsRemain();
     }
   }
 

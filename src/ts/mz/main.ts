@@ -75,9 +75,7 @@ module Mz {
 				//}
 				Mz.drawAll(Obj, canvas, context);
 
-				room.events.forEach(function(e :Event) {
-					e.proc(p, Obj.direction);
-				});
+				Mz.fireEvents(room.events, p, Obj.direction);
 			}
 		}
 	}

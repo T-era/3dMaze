@@ -32,7 +32,7 @@ module Mz {
 		z:number;
 	}
   export interface Event {
-    proc(pos :Position, d);
+    proc(pos :Position, d, eventsRemain :Common.Callback);
   }
   export interface JSRoom {
     num:number;
