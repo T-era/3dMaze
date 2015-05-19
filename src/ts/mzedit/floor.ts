@@ -10,7 +10,7 @@ module MzE {
 		floors :number;
 		rooms :Mz.IRoom[][][];
 		z :number;
-		roomDivs :Room[][];
+		roomDivs :Room[];
 		roomPointed :RoomPointedListener;
 
 		constructor(cols, rows, floors, rooms, z :number, roomPointed :RoomPointedListener) {
@@ -24,24 +24,17 @@ module MzE {
 		init(owner :JQuery) {
 			this.roomDivs = []
 			for (var y = 0; y < this.rows; y ++) {
-				var roomDivRows = [];
-				var row = $("<div>")
-					.addClass("MzRoomRow")
-					.appendTo(owner);
 				for (var x = 0; x < this.cols; x ++) {
 					var room = new Room(this, x, y, this.z, this.roomPointed)
-						.appendTo(row);
-					roomDivRows.push(room);
+						.appendTo(owner);
+					this.roomDivs.push(room);
 				}
-				this.roomDivs.push(roomDivRows);
 			}
 		}
 		repaint() {
-			for (var y = 0; y < this.rows; y ++) {
-				for (var x = 0; x < this.cols; x ++) {
-					this.roomDivs[y][x].resetColor();
-				}
-			}
+			this.roomDivs.forEach((room)=>{
+				room.resetColor();
+			});
 		}
 	}
 	export class Room {
@@ -67,6 +60,9 @@ module MzE {
 
 			var dom = $("<div>")
 				.addClass("MzRoom")
+				.css({
+					top: 10 + y*100 + "px",
+					left: 10 + x*100 + "px" })
 				.click(()=> {
 					fPointed(this)
 				});

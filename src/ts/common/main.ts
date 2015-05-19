@@ -6,6 +6,15 @@ module Common {
       }
     }
   }
+  if (! Array.prototype.map) {
+    Array.prototype.map = function<S>(f :(any)=>S) :S[] {
+      var list :S[] = [];
+      for (var i = 0, max = this.length; i < max; i ++) {
+        list.push(f(this[i]));
+      }
+      return list;
+    }
+  }
   export class Color {
     r: number;
     g: number;

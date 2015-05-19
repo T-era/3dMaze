@@ -25,37 +25,37 @@
 	position: absolute;
 	top: 0px;
 	left: 0px;
-	bottom: 130px;
+	bottom: 230px;
 	right: 0px;
 }
 .mze_side_mid {
 	position: absolute;
-	bottom: 30px;
+	bottom: 130px;
 	left: 0px;
 	right: 0px;
 	height: 100px;
 }
 .mze_side_btm {
 	position: absolute;
-	height: 30px;
+	height: 130px;
 	left: 0px;
 	bottom: 0px;
 	right: 0px;
 }
 
 .MzRoom {
-	border: 2px solid;
+	border: 4px solid;
 	border-color: #aaa;
-	position: relative;
-	width: 100px;
-	height: 100px;
+	position: absolute;
+	width: 92px;
+	height: 92px;
 	float: left;
 }
 .MzRoom.Selected {
-	border-color: #ff0;
+	border-color: #f80;
 }
 .MzRoomRow {
-	height: 104px;
+	height: 103px;
 }
 .MzWall {
 	position: absolute;

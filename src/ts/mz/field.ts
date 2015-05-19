@@ -1,9 +1,8 @@
 /// <reference path="../../lib/common.d.ts" />
+/// <reference path="types.ts" />
 /// <reference path="rooms.ts" />
 
 module Mz {
-	var template = '{ "baseColors": ?<bc>, "fields": ?<f> }';
-	var baseColorTemplate = '{ "r": ?<r>, "g": ?<g>, "b": ?<b> }';
 	var createRoom :(a:number, b:Common.Color, c:string[])=>Room
 			= (num, color, events)=> { return new Room(num, color, events); };
 	var array :Mz.Room[][][] = [[[createRoom(63, {r:255, g:255, b:255}, [])]]];
@@ -19,7 +18,9 @@ module Mz {
 				return array[z][y][x];
 			}
 		},
-		set: function(baseColors :Common.Color[], fields :{num;col;eve}[][][], events) {
+		set: function(startPoint :Position
+				, baseColors :Common.Color[]
+				, fields :{num;col;eve}[][][]) {
 			array = []
 			for (var z = 0, zMax = fields.length; z < zMax; z ++) {
 				var floorColor = baseColors[z];
@@ -42,40 +43,51 @@ module Mz {
 				}
 				array.push(floor);
 			}
+			Mz.Obj.here = startPoint;
+			Mz.Obj.repaint();
 		},
 		load: function(key :string) {
 			var str = localStorage[key];
 			var obj = JSON.parse(str);
 			this.set(
+				obj.start,
 				obj.baseColors,
-				obj.fields,
-				obj.events);
+				obj.fields);
 		},
-		saveToStorage: function(key :string, baseColors :Common.Color[], fields :IRoom[][][]) {
-			var str = template
-				.replace("?<bc>", listToString(baseColors, toStringBc))
-				.replace("?<f>", listToString<IRoom[][]>(fields
+		saveToStorage: function(key :string, start :Position, baseColors :Common.Color[], fields :IRoom[][][]) {
+			var str = JSON.stringify({
+				baseColors: baseColors,
+				start: start,
+				fields: listToJson<IRoom[][], JSRoom[][]>(fields
 					, function(floor) {
-						return listToString<IRoom[]>(floor,
+						return listToJson<IRoom[], JSRoom[]>(floor,
 							function(line :IRoom[]) {
-								return listToString<IRoom>(line, roomToString);
+								return listToJson<IRoom, JSRoom>(line, roomToJson);
 							});
-					}))
+					})
+			});
+
 			localStorage[key] = str;
+		},
+		size: function() :Position {
+			return {
+				x: array[0][0].length,
+				y: array[0].length,
+				z: array.length
+			}
 		},
 		roomFromJson: roomFromJson
 	};
-	function listToString<T>(list :T[], convertItem :(a:T)=>string) :string {
-		if (!list) return "[]";
-		var str = "[" + convertItem(list[0]);
-		for (var i = 1, max = list.length; i < max; i ++) {
-			str += ",";
-			str += convertItem(list[i]);
-		}
-		str += "]";
-		return str;
+	function listToJson<T, S>(list :T[], convertItem :(a:T)=>S) :S[] {
+		if (!list) return [];
+
+		var ret = [];
+		list.forEach((item)=> {
+			ret.push(convertItem(item));
+		})
+		return ret;
 	}
-	function roomToString(room :IRoom) :string {
+	function roomToJson(room :IRoom) :JSRoom {
 		var val = 0;
 		if (room.North) val += 1;
 		if (room.South) val += 2;
@@ -84,13 +96,13 @@ module Mz {
 		if (room.Floor) val += 16;
 		if (room.Ceil) val += 32;
 
-		return JSON.stringify({
+		return {
 			num: val,
 			col: room.Color,
 			eve: room.Events
-		});
+		};
 	}
-	function roomFromJson(obj :{num;col;eve}) :IRoom {
+	function roomFromJson(obj :JSRoom) :IRoom {
 		var num = Number(obj.num);
 
 		return {
@@ -103,11 +115,5 @@ module Mz {
 			Color: obj.col,
 			Events: obj.eve
 		};
-	}
-	function toStringBc(color :Common.Color) :string {
-		return baseColorTemplate
-			.split("?<r>").join(color.r.toString())
-			.split("?<g>").join(color.g.toString())
-			.split("?<b>").join(color.b.toString());
 	}
 }

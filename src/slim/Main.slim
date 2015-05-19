@@ -45,11 +45,11 @@ html
             div id="floorSelect"
           div class="mze_side_mid"
             input type="checkbox" id="room_color_switch"
-            label for="room_color_switch" | この部屋の壁の色
+            label for="room_color_switch" この部屋の壁の色
             div id="room_color" style="background:#aaa; width:50px; height:50px;"
           div class="mze_side_btm"
-            select id="room_event_select"
-              option val="-1" -
-              option val="start" start
-              option val="goal" goal
-              option val="message" message
+            input type="checkbox" id="room_event_start"
+            label for="room_event_start" is Start
+            input type="checkbox" id="room_event_goal"
+            label for="room_event_goal" is Goal
+            div id="room_event_list" style="background:#fff;"

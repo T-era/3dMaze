@@ -14,6 +14,7 @@ module Mz {
 		here :Position;
     onLoad();
     enable(boolean);
+    repaint();
 	}
   export interface FullDirection {
     North: Direction;
@@ -30,4 +31,12 @@ module Mz {
 		y:number;
 		z:number;
 	}
+  export interface Event {
+    proc(pos :Position, d);
+  }
+  export interface JSRoom {
+    num:number;
+    col:Common.Color;
+    eve:string[];
+  }
 }

@@ -1,5 +1,6 @@
 /// <reference path="../../lib/common.d.ts" />
 /// <reference path="types.ts" />
+/// <reference path="event.ts" />
 
 module Mz {
 	export var Direction :FullDirection = {
@@ -9,6 +10,9 @@ module Mz {
 			},
 			right: function(pos :Position, dd :number) :Position {
 				return { x: pos.x+dd, y: pos.y, z: pos.z };
+			},
+			toJpStr: function() {
+				return "北";
 			}
 		},
 		South: {
@@ -17,6 +21,9 @@ module Mz {
 			},
 			right: function(pos, dd) {
 				return { x: pos.x-dd, y: pos.y, z: pos.z };
+			},
+			toJpStr: function() {
+				return "南";
 			}
 		},
 		East: {
@@ -25,6 +32,9 @@ module Mz {
 			},
 			right: function(pos, dd) {
 				return { x: pos.x, y: pos.y+dd, z: pos.z };
+			},
+			toJpStr: function() {
+				return "東";
 			}
 		},
 		West: {
@@ -33,12 +43,15 @@ module Mz {
 			},
 			right: function(pos, dd) {
 				return { x: pos.x, y: pos.y-dd, z: pos.z };
+			},
+			toJpStr: function() {
+				return "西";
 			}
 		}
 	}
 	export class Room {
 		color :Common.Color;
-		events :string[];
+		events :Event[];
 		hasFloor :boolean;
 		hasCeil :boolean;
 
@@ -56,7 +69,7 @@ module Mz {
 			this.southWall = Math.floor(walls/2) % 2 != 0;
 			this.eastWall = Math.floor(walls/4) % 2 != 0;
 			this.westWall = Math.floor(walls/8) % 2 != 0;
-			this.events = events;
+			this.events = events.map(Mz.readEvent);
 		}
 		hasNearWall(direction :Direction) :boolean {
 			return (direction == Mz.Direction.North && this.southWall)

@@ -43,7 +43,17 @@ module MzE {
 			if (this.target) {
 				this.clickEnable = this.switch.prop("checked");
 				if (! this.clickEnable) {
-					this.target.Color = null;
+					UIParts.UserConfirm(""
+						, "この部屋の壁色設定を消します。"
+						, (callback)=> {
+							this.target.Color = null;
+							callback();
+							this._showColor();
+						}, (callback)=> {
+							this.clickEnable = true;
+							this.switch.prop("checked", true);
+							callback();
+						});
 				}
 			} else {
 				this.clickEnable = false;

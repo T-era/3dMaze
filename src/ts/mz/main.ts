@@ -1,6 +1,7 @@
 /// <reference path="../../lib/jquery/jquery.d.ts" />
 /// <reference path="../../lib/uiparts.d.ts" />
 /// <reference path="draw.ts" />
+/// <reference path="event.ts" />
 
 module Mz {
 	var once = false;
@@ -22,6 +23,9 @@ module Mz {
 				$(window).keydown(keyDown);
 				once = true;
 			}
+		},
+		repaint: function() {
+			Mz.drawAll(Obj, canvas, context);
 		}
 	};
 
@@ -71,8 +75,8 @@ module Mz {
 				//}
 				Mz.drawAll(Obj, canvas, context);
 
-				room.events.forEach(function(str) {
-					eval(str);
+				room.events.forEach(function(e :Event) {
+					e.proc(p, Obj.direction);
 				});
 			}
 		}
