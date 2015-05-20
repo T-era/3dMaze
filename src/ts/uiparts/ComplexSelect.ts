@@ -22,7 +22,7 @@ module UIParts {
 		fItemLoader :()=>ComplexSelectorItem<T>[];
 		itemSelectedCallback :(T)=>void;
 
-		constructor(owner :JQuery, itemSelectedCallback :(T)=>void) {
+		constructor(owner :JQuery, itemSelectedCallback :(arg:T)=>void) {
 			owner
 				.addClass("_select_box")
 			this.options = $("<ul>")
@@ -59,7 +59,9 @@ module UIParts {
 		}
 		setSelectedMark(index :number) {
 			this._clearSelected();
-			$(this.options.children()[index]).addClass("_select_box_item_selected");
+			if (index >= 0) {
+				$(this.options.children()[index]).addClass("_select_box_item_selected");
+			}
 		}
 		_clearSelected() {
 			this.options.children().removeClass("_select_box_item_selected");

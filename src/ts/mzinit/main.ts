@@ -1,6 +1,8 @@
 /// <reference path="../../lib/jquery/jquery.d.ts" />
 /// <reference path="../../lib/jquery/jqueryui.d.ts" />
 /// <reference path="../../lib/common.d.ts" />
+/// <reference path="../../lib/mz.d.ts" />
+
 
 module MzI {
 	export interface InitSetting {
@@ -19,6 +21,7 @@ module MzI {
 		dialog = $("#baseSettngs")
 			.dialog({
 				autoOpen: false,
+				modal: true,
 				width: "800px"
 			});
 		nameInput = $("input#nameIn");
@@ -33,6 +36,7 @@ module MzI {
 			whenClose :Common.Callback) {
 		dialog.dialog({
 			title: title,
+			modal: true,
 			buttons: {
 				"OK": function() {
 					okAction({
@@ -48,7 +52,10 @@ module MzI {
 					dialog.dialog("close");
 				}
 			},
-			close: whenClose
+			close: ()=> {
+				Mz.Obj.enable(true);
+				whenClose();
+			}
 		}).dialog("open");
 	}
 }

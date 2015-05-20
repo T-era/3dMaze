@@ -44,6 +44,8 @@ module MzE {
 		dom :JQuery;
 		walls: Wall[];
 		obj :Mz.IRoom;
+		_isGoal :boolean;
+		_normalEvents :Mz.Event[];
 
 		constructor(floorObj :Floor, x :number, y :number, z: number, fPointed :RoomPointedListener) {
 			this.floor = floorObj;
@@ -70,6 +72,16 @@ module MzE {
 			for (var i = 0, max = this.walls.length; i < max; i ++) {
 				this.dom.append(this.walls[i].div);
 			}
+			var normal = [];
+			this.obj.Events.forEach((str)=> {
+				var event = Mz.readEvent(str);
+				if (event.isNormal) {
+					normal.push(event);
+				} else {
+					this.isGoal(true);
+				}
+			})
+			this._normalEvents = normal;
 		}
 		appendTo(owner :JQuery) :Room {
 			this.dom.appendTo(owner);
@@ -78,6 +90,39 @@ module MzE {
 		resetColor() {
 			for (var i = 0, max = this.walls.length; i < max; i ++) {
 				this.walls[i].resetColor();
+			}
+		}
+		isGoal(arg :boolean = null) {
+			if (arg != null) {
+				this._isGoal = arg;
+
+				this.__copyEventToObj();
+			}
+			return this._isGoal;
+		}
+		addNormalEvent(arg :Mz.Event) {
+			this._normalEvents.push(arg);
+
+			this.__copyEventToObj();
+		}
+		removeNormalEvent(arg :Mz.Event) {
+			var index=-1;
+			for (var i = 0, max = this._normalEvents.length; i < max; i ++) {
+				if (arg == this._normalEvents[i]) {
+					index = i;
+				}
+			}
+			this._normalEvents.splice(index, 1);
+
+			this.__copyEventToObj();
+		}
+		__copyEventToObj() {
+			this.obj.Events = [];
+			this._normalEvents.forEach((e)=> {
+				this.obj.Events.push(e.toJsonString());
+			});
+			if (this._isGoal) {
+				this.obj.Events.push(new Mz.Goal().toJsonString());
 			}
 		}
 	}

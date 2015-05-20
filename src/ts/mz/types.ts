@@ -33,6 +33,8 @@ module Mz {
 	}
   export interface Event {
     proc(pos :Position, d, eventsRemain :Common.Callback);
+    toJsonString() :string;
+    isNormal :boolean;
   }
   export interface JSRoom {
     num:number;

@@ -4,20 +4,28 @@
 
 module UIParts {
 	var dialog :JQuery;
+	var text :JQuery;
+
 	$(function() {
+		text = $("<div>");
 		dialog = $("<div>")
-			.appendTo($("body"));
+			.appendTo($("body"))
+			.append(text);
 	});
 
 	export function UserConfirm(
 			title :string,
 			message :string,
-			okAction :(Callback)=>void = null,
-			cancelAction :(Callback)=>void = null) {
-		dialog.text(message)
+			okAction :(callback: Common.Callback)=>void = null,
+			cancelAction :(callback: Common.Callback)=>void = null,
+			whenOpen :Common.Callback = null,
+			whenClose :Common.Callback = null) {
+		text.text(message);
+		dialog
 			.dialog({
 				autoOpen: true,
 				title: title,
+				modal: true,
 				buttons: {
 					"OK": function() {
 						if (okAction) {
@@ -33,14 +41,24 @@ module UIParts {
 							dialogClose();
 						}
 					}
-				}
+				},
+				open: whenOpen,
+				close: whenClose
 			});
 	};
-	export function Alert(title :string, message :string, okAction = null) {
-		dialog.text(message)
+	export function Alert(
+			title :string,
+			message :string,
+			okAction :(callback: Common.Callback)=>void = null,
+			whenOpen :Common.Callback = null,
+			whenClose :Common.Callback = null) {
+		text.text(message);
+
+		dialog
 			.dialog({
 				autoOpen: true,
 				title: title,
+				modal: true,
 				buttons: {
 					"OK": function() {
 						if (okAction) {
@@ -49,7 +67,9 @@ module UIParts {
 							dialogClose();
 						}
 					},
-				}
+				},
+				open: whenOpen,
+				close: whenClose
 			});
 	}
 

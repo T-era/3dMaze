@@ -1,20 +1,23 @@
 /// <reference path="main.ts" />
 
 module Mz {
-  export function fireEvents(list :Event[], pos :Position, d) {
-    fireEventQueue(list);
+  export function fireEvents(list :Event[], dr :DrawingRoot) {
+    Mz.Obj.enable(false);
+    fireEventQueue(list.concat());
 
     function fireEventQueue(queue :Event[]) {
-      if (list.length > 0) {
-        var event = list.shift();
-        event.proc(pos, d, function() {
-          fireEventQueue(list);
+      if (queue.length == 0) {
+        Mz.Obj.enable(true);
+      } else {
+        var event = queue.shift();
+        event.proc(dr.here, dr.direction, function() {
+          fireEventQueue(queue);
         });
       }
     }
   }
   export function readEvent(arg :string) :Event {
-    var parts = arg.split(":");
+    var parts = arg.split("/");
     var type = parts[0];
     switch(type) {
       case "g":
@@ -44,6 +47,7 @@ module Mz {
   export class Goal implements Event {
     title: string;
     message :string;
+    isNormal = false;
 
     constructor(title :string = "Goal", message :string = "") {
       this.title = title;
@@ -55,17 +59,24 @@ module Mz {
         messageToShow(this.title, pos, d),
         messageToShow(this.message, pos, d));
     }
+    toJsonString() :string {
+      return ["e", this.title, this.message].join("/");
+    }
+    toString() :string {
+      return "(GOAL)" + this.title + "[" + this.message + "]";
+    }
   }
-  export class Messaging {
+  export class Messaging implements Event {
     title: string;
     message :string;
+    isNormal = true;
 
     constructor(title :string = "", message :string = "") {
       this.title = title;
       this.message = message;
     }
     proc(pos :Position, d, eventsRemain :Common.Callback) {
-      UIParts.Alert(
+      UIParts.UserConfirm(
         messageToShow(this.title, pos, d),
         messageToShow(this.message, pos, d),
         function(howClose) {
@@ -73,9 +84,16 @@ module Mz {
           eventsRemain();
         });
     }
+    toJsonString() :string {
+      return ["m", this.title, this.message].join("/");
+    }
+    toString() :string {
+      return this.title + "[" + this.message + "]";
+    }
   }
-  export class Warp {
+  export class Warp implements Event {
     jumpTo;
+    isNormal = true;
 
     constructor(to :Position = null) {
       this.jumpTo = to;
@@ -87,20 +105,29 @@ module Mz {
       } else {
         var size = Mz.Field.size()
         to = {
-          x: Math.random() * size.x,
-          y: Math.random() * size.y,
-          z: Math.random() * size.z
+          x: Math.floor(Math.random() * size.x),
+          y: Math.floor(Math.random() * size.y),
+          z: Math.floor(Math.random() * size.z)
         };
       }
       Mz.Obj.here = to;
       Mz.Obj.repaint();
       eventsRemain();
     }
+    toJsonString() :string {
+      return ["w", JSON.stringify(this.jumpTo)].join("/");
+    }
+    toString() :string {
+      return "Warp " + (this.jumpTo
+        ? "to " + JSON.stringify(this.jumpTo)
+        : "?");
+    }
   }
-  export class TurnTable {
+  export class TurnTable implements Event {
     directionTo;
+    isNormal = true;
 
-    constructor(dir) {
+    constructor(dir = null) {
       this.directionTo = dir;
     }
     proc(pos :Position, d, eventsRemain :Common.Callback) {
@@ -129,14 +156,27 @@ module Mz {
       Mz.Obj.repaint();
       eventsRemain();
     }
+    toJsonString() :string {
+      var headChar = this.directionTo == null ? null
+        : this.directionTo == Mz.Direction.North ? "n"
+        : this.directionTo == Mz.Direction.South ? "s"
+        : this.directionTo == Mz.Direction.East ? "e"
+        : this.directionTo == Mz.Direction.West ? "w"
+        : null;
+      return ["t", headChar].join("/");
+    }
+    toString() :string {
+      return "Turn " + (this.directionTo
+        ? "to " + this.directionTo.toJpStr()
+        : "?");
+    }
   }
-
 
   function messageToShow(format :string, pos :Position, dir) {
     return format
-      .replace(/$X/, String(pos.x))
-      .replace(/$Y/, String(pos.y))
-      .replace(/$Z/, String(pos.z))
-      .replace(/$D/, dir.toJpStr());
+      .replace(/\$X/, String(pos.x))
+      .replace(/\$Y/, String(pos.y))
+      .replace(/\$Z/, String(pos.z))
+      .replace(/\$D/, dir.toJpStr());
   }
 }

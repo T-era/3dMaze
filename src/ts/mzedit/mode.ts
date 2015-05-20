@@ -6,6 +6,7 @@
 /// <reference path="floor_selector.ts" />
 /// <reference path="rooms.ts" />
 /// <reference path="floor.ts" />
+/// <reference path="event/main.ts" />
 
 module MzE {
 	var xSize = 1;
@@ -17,10 +18,10 @@ module MzE {
 	var baseColors :Common.Color[];
 	var floorSelector :UIParts.ComplexSelect<number>;
 	var selectedRoom :Room;
-	var roomChangeListeners = [];
-	var startPoint :Mz.Position = {x:0,y:0,z:0};
+	var roomChangeListeners :Common.Listener<MzE.Room>[] = [];
+	export var startPoint :Mz.Position = {x:0,y:0,z:0};
 
-	export function fireRoomChange(room :Mz.IRoom) {
+	export function fireRoomChange(room :MzE.Room) {
 		for (var i = 0, max = roomChangeListeners.length; i < max; i ++) {
 			var listener = roomChangeListeners[i];
 			listener(room);
@@ -32,15 +33,16 @@ module MzE {
 			Mz.Field.saveToStorage(name, startPoint, baseColors, fields);
 		});
 		floorSelector = FloorSelector($("#floorSelect"), function() { return baseColors; });
-		roomChangeListeners.push(MzE.roomChangeListener);
+		roomChangeListeners.push(MzE.color_roomChangeListener);
+		roomChangeListeners.push(MzE.event.event_roomChangeListener);
 	});
 
 	export interface EditModeType {
 		save();
 		initEmpty(arg :MzI.InitSetting);
-		edit(_name :string, tempColors :Common.Color[], fieldNums);
+		edit(_name :string, start :Mz.Position, tempColors :Common.Color[], fieldNums);
 		selectFloor(val :number);
-		reload(newFields :Mz.IRoom[][][], newBaseColors :Common.Color[]);
+		reload(start :Mz.Position, newFields :Mz.IRoom[][][], newBaseColors :Common.Color[]);
 	}
 
 	class _EditMode {
@@ -61,15 +63,15 @@ module MzE {
 				tempField[z] = createField();
 				tempColors[z] = new Common.Color(255, 255, 255);
 			}
-			this.reload(tempField, tempColors);
+			this.reload({x:0,y:0,z:0}, tempField, tempColors);
 		}
-		edit(_name :string, tempColors :Common.Color[], fieldStrs :{num;col;eve}[][][]) {
+		edit(_name :string, start :Mz.Position, tempColors :Common.Color[], fieldStrs :{num;col;eve}[][][]) {
 			zSize = fieldStrs.length;
 			ySize = fieldStrs[0].length;
 			xSize = fieldStrs[0][0].length;
 			name = _name
 			var tempField = mapToRoom(fieldStrs);
-			this.reload(tempField, tempColors);
+			this.reload(start, tempField, tempColors);
 
 			function mapToRoom(list :{num;col;eve}[][][]) :Mz.IRoom[][][] {
 				var ret = [];
@@ -96,15 +98,16 @@ module MzE {
 				var baseColor = baseColors[val];
 			}
 		}
-		reload(newFields :Mz.IRoom[][][], newBaseColors :Common.Color[]) {
+		reload(start: Mz.Position, newFields :Mz.IRoom[][][], newBaseColors :Common.Color[]) {
 			fields = newFields;
+			startPoint = start;
 			rooms = new Rooms(xSize, ySize, zSize, $("#output"), fields, function(room :Room) {
 				if (selectedRoom) {
 					selectedRoom.dom.removeClass("Selected");
 				}
 				room.dom.addClass("Selected");
 				selectedRoom = room;
-				fireRoomChange(selectedRoom.obj);
+				fireRoomChange(selectedRoom);
 			});
 
 			baseColors = newBaseColors;
@@ -129,7 +132,8 @@ module MzE {
 					West: true,
 					Ceil: true,
 					Floor: true,
-					Color: null
+					Color: null,
+					Events: [],
 				};
 			}
 		}

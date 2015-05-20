@@ -5,9 +5,9 @@
 
 module MzE {
 	export var roomColor :RoomColor;
-	export var roomChangeListener :(arg :Mz.IRoom)=>void = function(room :Mz.IRoom) {
-		roomColor.roomChanged(room);
-	};
+	export function color_roomChangeListener(arg :MzE.Room) :void {
+		roomColor.roomChanged(arg);
+	}
 
 	$(()=> {
 		roomColor = new RoomColor($("#room_color_switch"), $("#room_color"));
@@ -27,10 +27,10 @@ module MzE {
 			this.roomChanged(null);
 		}
 
-		roomChanged(arg :Mz.IRoom) {
-			this.target = arg;
+		roomChanged(arg :MzE.Room) {
+			this.target = arg == null ? null : arg.obj;
 			if (arg) {
-				var enable :boolean = Boolean(arg.Color);
+				var enable :boolean = Boolean(arg.obj.Color);
 				this.switch.prop("checked", enable);
 				this.clickEnable = enable;
 			} else {

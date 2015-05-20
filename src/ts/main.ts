@@ -31,7 +31,7 @@ $(function() {
             height: "16px",
             background: "#fdd" })
           .click(()=> {
-            UIParts.UserConfirm("迷路の削除", "迷路 " + item + " を削除します。",
+            Mz.UserConfirm("迷路の削除", "迷路 " + item + " を削除します。",
               (callback:Common.Callback)=> {
                 localStorage.removeItem(item);
                 cs.reload();
@@ -48,7 +48,7 @@ $(function() {
             height: "16px" })
           .click(()=> {
             var obj = JSON.parse(localStorage[item]);
-            MzE.openEdit(item, obj.baseColors, obj.fields);
+            MzE.openEdit(item, obj.start, obj.baseColors, obj.fields);
             return false;
           })
       ],
@@ -56,7 +56,7 @@ $(function() {
     };
   }
   function loadMap(key) {
-    UIParts.UserConfirm("迷路の初期化", "迷路 " + key + " をロードします。",
+    Mz.UserConfirm("迷路の初期化", "迷路 " + key + " をロードします。",
       (callback :Common.Callback)=> {
         Mz.Field.load(key);
         Mz.Obj.onLoad();
@@ -75,7 +75,6 @@ $(function() {
         }
       },
       ()=> {
-        Mz.Obj.enable(true);
       });
   });
 
@@ -87,7 +86,9 @@ $(function() {
     if (setting.name in localStorage) { alert("その名前の迷路は作れない！\n(おなじ名前の迷路が既に登録されていかも)"); return false; }
 
     MzE.toEdit(setting,
-      ()=> { cs.reload(); }
+      ()=> {
+        cs.reload();
+      }
     );
 
     return true;

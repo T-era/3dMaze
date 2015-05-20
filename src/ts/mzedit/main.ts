@@ -10,10 +10,14 @@ module MzE {
 			width: "90%",
 			height: $("#edit").parent().height() * .9,
 			autoOpen: false,
+			modal: true,
 			buttons: {
 				Save: function() {
 					MzE.EditMode.save();
 				}
+			},
+			close: ()=> {
+				Mz.Obj.enable(true);
 			}
 		});
 	});
@@ -30,8 +34,9 @@ module MzE {
 			editDialog.dialog("open");
 		}
 	}
-	export function openEdit(name :string, baseColors :Common.Color[], fields :{num;col}) {
-		MzE.EditMode.edit(name, baseColors, fields);
+	export function openEdit(name :string, start :Mz.Position, baseColors :Common.Color[], fields :{num;col}) {
+		MzE.EditMode.edit(name, start, baseColors, fields);
 		editDialog.dialog("open");
+		Mz.Obj.enable(false);
 	}
 }
