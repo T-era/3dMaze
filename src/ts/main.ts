@@ -31,7 +31,7 @@ $(function() {
             height: "16px",
             background: "#fdd" })
           .click(()=> {
-            Mz.UserConfirm("迷路の削除", "迷路 " + item + " を削除します。",
+            UIParts.UserConfirm("迷路の削除", "迷路 " + item + " を削除します。",
               (callback:Common.Callback)=> {
                 localStorage.removeItem(item);
                 cs.reload();
@@ -56,7 +56,7 @@ $(function() {
     };
   }
   function loadMap(key) {
-    Mz.UserConfirm("迷路の初期化", "迷路 " + key + " をロードします。",
+    UIParts.UserConfirm("迷路の初期化", "迷路 " + key + " をロードします。",
       (callback :Common.Callback)=> {
         Mz.Field.load(key);
         Mz.Obj.onLoad();
@@ -67,7 +67,6 @@ $(function() {
       });
   }
   $("#main_new_button").click(()=> {
-    Mz.Obj.enable(false);
     MzI.openBaseSetting("新しい迷路を作成",
       (setting :MzI.InitSetting, callback :Common.Callback)=> {
         if (createNewMap(setting)) {

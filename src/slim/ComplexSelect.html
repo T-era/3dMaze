@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<style type="text/css">
+#select_box {
+}
+.delete_button {
+	border: solid 1px #aaa;
+	background: #eee;
+	text-align: center;
+	float:right;
+	width: 20px;
+}
+		</style>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+		<script type="text/javascript" src="ComplexSelect.js"></script>
+		<script type="text/javascript" >
+$(function() {
+	var list = ["abc", "defghi", "j", "abc", "defghi", "j", "abc", "defghi", "j"];
+	var sb = new ComplexSelect({width: 100, height: 100}, $("#select_box"));
+	sb.items(toSelectOption(list));
+
+	function toSelectOption(list) {
+		var ret = [];
+		for (var i = 0, max = list.length; i < max; i ++) {
+			var line = [];
+			line.push($("<span>")
+				.text(list[i])
+				.click(function() {
+				}));
+			line.push($("<span>")
+				.addClass("delete_button")
+				.text("x")
+				.click(function() {
+					alert("del");
+					return false;
+				}));
+
+			ret.push(line);
+		}
+		return ret;
+	}
+	$("#btn").click(function() {
+		sb.items(toSelectOption("hogehoge"));
+	});
+});
+		</script>
+	</head>
+	<body>
+		<div id="select_box"></div>
+		<button id="btn">btn</button>
+	</body>
+</html>

@@ -6,12 +6,10 @@ module Mz {
     fireEventQueue(list.concat());
 
     function fireEventQueue(queue :Event[]) {
-      if (queue.length == 0) {
-        Mz.Obj.enable(true);
-      } else {
-        var event = queue.shift();
+      if (list.length > 0) {
+        var event = list.shift();
         event.proc(dr.here, dr.direction, function() {
-          fireEventQueue(queue);
+          fireEventQueue(list);
         });
       }
     }
@@ -76,7 +74,7 @@ module Mz {
       this.message = message;
     }
     proc(pos :Position, d, eventsRemain :Common.Callback) {
-      UIParts.UserConfirm(
+      UIParts.Alert(
         messageToShow(this.title, pos, d),
         messageToShow(this.message, pos, d),
         function(howClose) {

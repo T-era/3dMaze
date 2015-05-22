@@ -18,7 +18,7 @@ module MzE {
 	var baseColors :Common.Color[];
 	var floorSelector :UIParts.ComplexSelect<number>;
 	var selectedRoom :Room;
-	var roomChangeListeners :Common.Listener<MzE.Room>[] = [];
+	var roomChangeListeners :Common.Func<MzE.Room>[] = [];
 	export var startPoint :Mz.Position = {x:0,y:0,z:0};
 
 	export function fireRoomChange(room :MzE.Room) {

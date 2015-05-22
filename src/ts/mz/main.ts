@@ -9,21 +9,6 @@ module Mz {
 	var context;
 	var clickListening = true;
 
-	export function Alert(title :string
-			, message:string
-			, okAction :(a :Common.Callback)=>void = null) {
-		UIParts.Alert(title, message, okAction
-				, ()=> { Obj.enable(false); }
-				, ()=> { Obj.enable(true); })
-	}
-	export function UserConfirm(title :string
-			, message:string
-			, okAction :(a :Common.Callback)=>void = null
-			, cancelAction :(a :Common.Callback)=>void = null) {
-		UIParts.UserConfirm(title, message, okAction, cancelAction
-				, ()=> { Obj.enable(false); }
-				, ()=> { Obj.enable(true); })
-	}
 	export var Obj :DrawingRoot = {
 		enable: (flag)=> { clickListening = flag; },
 		here: { x: 0, y: 0, z: 0 },
@@ -35,7 +20,7 @@ module Mz {
 
 			Mz.drawAll(Obj, canvas, context);
 			if (!once) {
-				$(window).keydown(keyDown);
+				$(window).keyup(keyListen);
 				once = true;
 			}
 		},
@@ -44,8 +29,9 @@ module Mz {
 		}
 	};
 
-	function keyDown(arg) {
-		if (clickListening) {
+	function keyListen(arg) {
+		if (clickListening
+			&& arg.target.tagName.toLowerCase() == "body") {
 			switch (arg.keyCode) {
 				case 37:
 					Obj.direction = Obj.direction == Mz.Direction.North ? Mz.Direction.West
@@ -71,19 +57,18 @@ module Mz {
 					moveTo(function(room) { return room.hasFloor; }
 						, function(pos) { return { x: pos.x, y: pos.y, z: pos.z + 1 }; });
 					break;
-				case 9:
+				case 32:
 					moveTo(function(room) { return room.hasAwayWall(Obj.direction); }
 						, function(pos) { return Obj.direction.d(pos); });
 					break;
 			}
-			return false;
 		}
 		function moveTo(checker, move) {
 			var p = Obj.here;
 			var room = Mz.Field.at(p);
 
 			if (room && checker(room)) {
-				Alert("Oops!", "壁がある！");
+				UIParts.Alert("Oops!", "壁がある！");
 			} else {
 				var next = move(p);
 				//if (Mz.Field.at(next)) { // Check outbound.
