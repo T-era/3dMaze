@@ -99,7 +99,9 @@ module Mz {
 		return {
 			num: val,
 			col: room.Color,
-			eve: room.Events
+			eve: room.Events.map((event :Event, index :number, array)=> {
+				return event.toJsonString()
+			})
 		};
 	}
 	function roomFromJson(obj :JSRoom) :IRoom {
@@ -113,7 +115,9 @@ module Mz {
 			Floor: (num >> 4) % 2 != 0,
 			Ceil: (num >> 5) % 2 != 0,
 			Color: obj.col,
-			Events: obj.eve
+			Events: obj.eve.map((str :string, index :number, array)=> {
+				return readEvent(str)
+			})
 		};
 	}
 }

@@ -7,7 +7,7 @@ module Mz {
     Ceil: boolean;
     Floor: boolean;
     Color: Common.Color;
-    Events: string[];
+    Events: Event[];
   }
   export interface DrawingRoot {
 		direction :Direction;

@@ -14,4 +14,6 @@ call tsc --out %DEST_DIR%\mzinit.js ts/mzinit/main.ts
 call tsc --out %DEST_DIR%\mzedit.js ts/mzedit/main.ts
 call tsc --out %DEST_DIR%\mz_main.js ts/main.ts
 
+copy static\* ..\dest\
+
 C:\Ruby22-x64\bin\slimrb slim/Main.slim %DEST_DIR%\Main.html

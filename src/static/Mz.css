@@ -38,7 +38,7 @@ html, body {
 ul.no_mark {
 	list-style: none;
 }
-li>label:after {
+li>label.title:after {
 	content: ":";
 }
 .like_button {

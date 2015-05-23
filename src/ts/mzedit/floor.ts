@@ -73,8 +73,7 @@ module MzE {
 				this.dom.append(this.walls[i].div);
 			}
 			var normal = [];
-			this.obj.Events.forEach((str)=> {
-				var event = Mz.readEvent(str);
+			this.obj.Events.forEach((event :Mz.Event, index :number, array)=> {
 				if (event.isNormal) {
 					normal.push(event);
 				} else {
@@ -119,10 +118,10 @@ module MzE {
 		__copyEventToObj() {
 			this.obj.Events = [];
 			this._normalEvents.forEach((e)=> {
-				this.obj.Events.push(e.toJsonString());
+				this.obj.Events.push(e);
 			});
 			if (this._isGoal) {
-				this.obj.Events.push(new Mz.Goal().toJsonString());
+				this.obj.Events.push(new Mz.Goal());
 			}
 		}
 	}

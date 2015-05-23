@@ -3,6 +3,7 @@
 }
 ._select_box_items {
 	border: 1px solid black;
+	background: #aaa;
 	width: 99%;
 	height: 100%;
 	margin: 0px;

@@ -103,17 +103,21 @@ module MzE {
           value: event,
           doms: [
             $("<label>").text(event.toString()),
-            $("<button>").text("削除").click(()=> {
-              room.removeNormalEvent(event);
-              whenRemove();
-              return false;
-            }),
+            $("<div>")
+              .addClass("right")
+              .addClass("MzE_event_remove")
+              .text("削除")
+              .click(()=> {
+                room.removeNormalEvent(event);
+                whenRemove();
+                return false;
+              }),
           ]
         });
       });
       ret.push({
         value: null,
-        doms: [$("<label>").text("add")]
+        doms: [$("<div>").text("+ Add").addClass("MzE_event_add")]
       })
       return ret;
     }
