@@ -3,14 +3,16 @@
 module Mz {
   export function fireEvents(list :Event[], dr :DrawingRoot) {
     Mz.Obj.enable(false);
-    fireEventQueue(list.concat());
+    fireEventQueue(list.slice());
 
     function fireEventQueue(queue :Event[]) {
-      if (list.length > 0) {
-        var event = list.shift();
+      if (queue.length > 0) {
+        var event = queue.shift();
         event.proc(dr.here, dr.direction, function() {
-          fireEventQueue(list);
+          fireEventQueue(queue);
         });
+      } else {
+        Mz.Obj.enable(true);
       }
     }
   }

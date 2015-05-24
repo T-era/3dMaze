@@ -22,8 +22,8 @@ module UIParts {
 				width: 20 + SAMPLE_VIEW_SIZE + INPUT_WIDTH + "px",
 				height: 10 + SAMPLE_VIEW_SIZE + "px"
 			}).dialog({
-				width: 40 + SAMPLE_VIEW_SIZE + INPUT_WIDTH + "px",
-				height: 140 + SAMPLE_VIEW_SIZE + "px",
+				width: 80 + SAMPLE_VIEW_SIZE + INPUT_WIDTH,
+				height: 140 + SAMPLE_VIEW_SIZE,
 				autoOpen: false,
 				closeOnEscape: true,
 				modal: true,
