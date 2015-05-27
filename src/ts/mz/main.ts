@@ -4,19 +4,20 @@
 /// <reference path="event.ts" />
 
 module Mz {
-	var once = false;
-	var canvas;
-	var context;
+	var once :boolean = false;
+	var canvas :HTMLCanvasElement;
+	var context :CanvasRenderingContext2D;
 	var clickListening = true;
+	var isGoal = true;
 
 	export var Obj :DrawingRoot = {
-		enable: (flag)=> { clickListening = flag; },
+		enable: setEnable,
 		here: { x: 0, y: 0, z: 0 },
 		direction: null,
 		onLoad: function() {
-			canvas = $("#main")[0];
-			context = canvas.getContext("2d");
-			this.direction = Mz.Direction.South;
+			canvas = <HTMLCanvasElement>$("#main")[0];
+			context = <CanvasRenderingContext2D>canvas.getContext("2d");
+			this.direction = Mz.Directions.South;
 
 			Mz.drawAll(Obj, canvas, context);
 			if (!once) {
@@ -29,23 +30,39 @@ module Mz {
 		}
 	};
 
+	function setEnable(state :EnableState) {
+		if (state == EnableState.Start) {
+			isGoal = false;
+			clickListening = true;
+		} else if (state == EnableState.Goal) {
+			isGoal = true;
+			clickListening = false;
+		} else if (state == EnableState.Suspend) {
+			clickListening = false;
+		} else if (state == EnableState.Restart) {
+			if (! isGoal) {
+				clickListening = true;
+			}
+		}
+	}
+
 	function keyListen(arg) {
 		if (clickListening
 			&& arg.target.tagName.toLowerCase() == "body") {
 			switch (arg.keyCode) {
 				case 37:
-					Obj.direction = Obj.direction == Mz.Direction.North ? Mz.Direction.West
-								: Obj.direction == Mz.Direction.South ? Mz.Direction.East
-								: Obj.direction == Mz.Direction.East ? Mz.Direction.North
-								: Obj.direction == Mz.Direction.West ? Mz.Direction.South
+					Obj.direction = Obj.direction == Mz.Directions.North ? Mz.Directions.West
+								: Obj.direction == Mz.Directions.South ? Mz.Directions.East
+								: Obj.direction == Mz.Directions.East ? Mz.Directions.North
+								: Obj.direction == Mz.Directions.West ? Mz.Directions.South
 								: null;
 					Mz.drawAll(Obj, canvas, context);
 					break;
 				case 39:
-					Obj.direction = Obj.direction == Mz.Direction.North ? Mz.Direction.East
-								: Obj.direction == Mz.Direction.South ? Mz.Direction.West
-								: Obj.direction == Mz.Direction.East ? Mz.Direction.South
-								: Obj.direction == Mz.Direction.West ? Mz.Direction.North
+					Obj.direction = Obj.direction == Mz.Directions.North ? Mz.Directions.East
+								: Obj.direction == Mz.Directions.South ? Mz.Directions.West
+								: Obj.direction == Mz.Directions.East ? Mz.Directions.South
+								: Obj.direction == Mz.Directions.West ? Mz.Directions.North
 								: null;
 					Mz.drawAll(Obj, canvas, context);
 					break;

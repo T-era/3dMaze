@@ -3,7 +3,7 @@
 /// <reference path="event.ts" />
 
 module Mz {
-	export var Direction :FullDirection = {
+	export var Directions :FullDirection = {
 		North: {
 			d: function(pos :Position) :Position {
 				return { x: pos.x, y: pos.y-1, z: pos.z };
@@ -72,28 +72,28 @@ module Mz {
 			this.events = events.map(Mz.readEvent);
 		}
 		hasNearWall(direction :Direction) :boolean {
-			return (direction == Mz.Direction.North && this.southWall)
-				|| (direction == Mz.Direction.South && this.northWall)
-				|| (direction == Mz.Direction.East && this.westWall)
-				|| (direction == Mz.Direction.West && this.eastWall);
+			return (direction == Mz.Directions.North && this.southWall)
+				|| (direction == Mz.Directions.South && this.northWall)
+				|| (direction == Mz.Directions.East && this.westWall)
+				|| (direction == Mz.Directions.West && this.eastWall);
 		}
 		hasAwayWall(direction :Direction) :boolean {
-			return (direction == Mz.Direction.North && this.northWall)
-				|| (direction == Mz.Direction.South && this.southWall)
-				|| (direction == Mz.Direction.East && this.eastWall)
-				|| (direction == Mz.Direction.West && this.westWall);
+			return (direction == Mz.Directions.North && this.northWall)
+				|| (direction == Mz.Directions.South && this.southWall)
+				|| (direction == Mz.Directions.East && this.eastWall)
+				|| (direction == Mz.Directions.West && this.westWall);
 		}
 		hasLeftWall(direction :Direction) :boolean {
-			return (direction == Mz.Direction.North && this.westWall)
-				|| (direction == Mz.Direction.South && this.eastWall)
-				|| (direction == Mz.Direction.East && this.northWall)
-				|| (direction == Mz.Direction.West && this.southWall);
+			return (direction == Mz.Directions.North && this.westWall)
+				|| (direction == Mz.Directions.South && this.eastWall)
+				|| (direction == Mz.Directions.East && this.northWall)
+				|| (direction == Mz.Directions.West && this.southWall);
 		}
 		hasRightWall(direction :Direction) :boolean {
-			return (direction == Mz.Direction.North && this.eastWall)
-				|| (direction == Mz.Direction.South && this.westWall)
-				|| (direction == Mz.Direction.East && this.southWall)
-				|| (direction == Mz.Direction.West && this.northWall);
+			return (direction == Mz.Directions.North && this.eastWall)
+				|| (direction == Mz.Directions.South && this.westWall)
+				|| (direction == Mz.Directions.East && this.southWall)
+				|| (direction == Mz.Directions.West && this.northWall);
 		}
 	}
 }

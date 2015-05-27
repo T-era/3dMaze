@@ -32,7 +32,6 @@
         "./mzedit/mode.ts",
         "./mzedit/room_color.ts",
         "./mzedit/rooms.ts",
-        "./mzedit/wall.ts",
         "./mzinit/main.ts",
         "./uiparts/ColorPicker.ts",
         "./uiparts/ComplexSelect.ts",

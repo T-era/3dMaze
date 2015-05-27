@@ -2,23 +2,14 @@
 /// <reference path="../lib/uiparts.d.ts" />
 /// <reference path="../lib/mzedit.d.ts" />
 /// <reference path="../lib/mzinit.d.ts" />
+/// <reference path="../lib/storage.d.ts" />
 /// <reference path="../lib/mz.d.ts" />
 
 $(function() {
   var cs = new UIParts.ComplexSelect($("#saved_maps"), loadMap);
-  cs.setLoader(loadAllMap(toSelectItem));
+  cs.setLoader(Mz.IO.saveDataList(toSelectItem));
   cs.reload();
 
-  function loadAllMap(fConvert) {
-    return ()=> {
-      var list = [];
-      for (var i = 0, max = localStorage.length; i < max; i ++) {
-        var key = localStorage.key(i);
-        list.push(fConvert(key));
-      }
-      return list;
-    }
-  }
   function toSelectItem(item) {
     return {
       doms: [
@@ -33,7 +24,7 @@ $(function() {
           .click(()=> {
             UIParts.UserConfirm("迷路の削除", "迷路 " + item + " を削除します。",
               (callback:Common.Callback)=> {
-                localStorage.removeItem(item);
+                Mz.IO.removeMap(item);
                 cs.reload();
                 callback();
               },
@@ -47,8 +38,8 @@ $(function() {
           .css({
             height: "16px" })
           .click(()=> {
-            var obj = JSON.parse(localStorage[item]);
-            MzE.openEdit(item, obj.start, obj.baseColors, obj.fields);
+            var obj = Mz.IO.loadRawJson(item);
+            Mz.Edit.openEdit(item, obj);
             return false;
           })
       ],
@@ -58,7 +49,7 @@ $(function() {
   function loadMap(key) {
     UIParts.UserConfirm("迷路の初期化", "迷路 " + key + " をロードします。",
       (callback :Common.Callback)=> {
-        Mz.Field.load(key);
+        Mz.IO.load(key);
         Mz.Obj.onLoad();
         callback();
       },
@@ -67,8 +58,8 @@ $(function() {
       });
   }
   $("#main_new_button").click(()=> {
-    MzI.openBaseSetting("新しい迷路を作成",
-      (setting :MzI.InitSetting, callback :Common.Callback)=> {
+    Mz.Init.openBaseSetting("新しい迷路を作成",
+      (setting :Mz.Init.InitSetting, callback :Common.Callback)=> {
         if (createNewMap(setting)) {
           callback();
         }
@@ -82,9 +73,9 @@ $(function() {
     if (setting.ySize < 1) { alert("迷路の広さ y を指定して！"); return false; }
     if (setting.zSize < 1) { alert("迷路の広さ z を指定して！"); return false; }
     if (! setting.name) { alert("迷路に名前をつけて！"); return false; }
-    if (setting.name in localStorage) { alert("その名前の迷路は作れない！\n(おなじ名前の迷路が既に登録されていかも)"); return false; }
+    if (Mz.IO.existsName(setting.name)) { alert("その名前の迷路は作れない！\n(おなじ名前の迷路が既に登録されていかも)"); return false; }
 
-    MzE.toEdit(setting,
+    Mz.Edit.toEdit(setting,
       ()=> {
         cs.reload();
       }

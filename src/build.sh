@@ -1,5 +1,5 @@
 DEST_DIR=../dest
-TSS=("common" "uiparts" "mz" "mzinit" "mzedit")
+TSS=("common" "uiparts" "mz" "storage" "mzinit" "mzedit")
 
 # Prepare TypeScript d files.
 ./dbuild.sh

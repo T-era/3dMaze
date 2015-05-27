@@ -1,4 +1,7 @@
 module Mz {
+  export enum EnableState {
+    Start, Suspend, Restart, Goal
+  }
   export interface IRoom {
     North: boolean;
     South: boolean;
@@ -23,8 +26,9 @@ module Mz {
     West: Direction;
   }
   export interface Direction {
-    d(Position) :Position;
-    right(Position, number) :Position;
+    d(a :Position) :Position;
+    right(p :Position, n :number) :Position;
+    toJpStr() :string;
   }
 	export interface Position {
 		x:number;
@@ -32,13 +36,23 @@ module Mz {
 		z:number;
 	}
   export interface Event {
-    proc(pos :Position, d, eventsRemain :Common.Callback);
+    proc(pos :Position, d :Direction, eventsRemain :Common.Callback);
     toJsonString() :string;
     isNormal :boolean;
   }
   export interface JSRoom {
-    num:number;
-    col:Common.Color;
-    eve:string[];
+    num :number;
+    col :Common.Color;
+    eve :string[];
+  }
+  export interface JsonData {
+    start :Mz.Position;
+    baseColors :Common.Color[];
+    fields :JSRoom[][][];
+  }
+  export interface IField {
+    at(pos :Position) :Room;
+    set(data :JsonData) :void;
+    size() :Position;
   }
 }

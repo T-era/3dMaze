@@ -1,5 +1,5 @@
 LIB_DIR=lib
-TARGETS=("common" "uiparts" "mz" "mzinit" "mzedit")
+TARGETS=("common" "uiparts" "mz" "storage" "mzinit" "mzedit")
 
 # Compile TypeScript code.
 for fld in ${TARGETS[@]}; do

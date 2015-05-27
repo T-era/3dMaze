@@ -21,26 +21,36 @@
 	width: 300px;
 	right: 0px;
 }
-.mze_side_top {
+.mze_side_row1 {
 	position: absolute;
 	top: 0px;
 	left: 0px;
-	bottom: 240px;
+	bottom: 264px;
 	right: 0px;
 }
-.mze_side_mid {
+.mze_side_row2 {
 	position: absolute;
-	bottom: 130px;
+	bottom: 155px;
 	left: 0px;
 	right: 0px;
 	height: 110px;
 }
-.mze_side_btm {
+.mze_side_row3 {
 	position: absolute;
 	height: 130px;
 	left: 0px;
+	bottom: 25px;
+	right: 0px;
+}
+.mze_side_row4 {
+	position: absolute;
+	height: 25px;
+	left: 0px;
 	bottom: 0px;
 	right: 0px;
+}
+.mze_side_row4>button {
+	width: 50%;
 }
 .mze_sidebar_select {
 	height: 100%;
@@ -166,6 +176,10 @@
 }
 .MzE_event_add {
 	background: #aaf;
+	width: 100%;
+	height: 100%;
+}
+.MzE_ExpImp>textarea {
 	width: 100%;
 	height: 100%;
 }

@@ -11,6 +11,7 @@ html
     script type="text/javascript" src="common.js"
     script type="text/javascript" src="uiparts.js"
     script type="text/javascript" src="mz.js"
+    script type="text/javascript" src="storage.js"
     script type="text/javascript" src="mzedit.js"
     script type="text/javascript" src="mzinit.js"
     script type="text/javascript" src="mz_main.js"
@@ -41,9 +42,9 @@ html
       div class="mze_all"
         div id="output" class="mze_main"
         div class="mze_sidebar"
-          div class="mze_side_top"
+          div class="mze_side_row1"
             div id="floorSelect" class="mze_sidebar_select"
-          div class="mze_side_mid"
+          div class="mze_side_row2"
             input type="checkbox" id="room_color_switch"
             label for="room_color_switch" この部屋の壁の色
             div id="room_color" style="background:#aaa; width:50px; height:50px;"
@@ -52,5 +53,8 @@ html
             label for="room_event_start" is Start
             input type="checkbox" id="room_event_goal"
             label for="room_event_goal" is Goal
-          div class="mze_side_btm"
+          div class="mze_side_row3"
             div id="room_event_list" class="mze_sidebar_select"
+          div class="mze_side_row4"
+            button id="edit_export" Export
+            button id="edit_import" Import

@@ -18,7 +18,7 @@ module Mz {
 			var py = size * y - size / 2;
 			return canvas.height / 2 + py;
 		}
-		function showRange(range, direction, here) {
+		function showRange(range :number, direction :Direction, here :Position) {
 			var basePoint = here;
 			var dSteps = function(temp, times) {
 				for (var i = 0; i < times; i ++) {
@@ -55,7 +55,7 @@ module Mz {
 					}
 				}
 			}
-			function drawWalls(distance, lr, df) {
+			function drawWalls(distance :number, lr :number, df :number) {
 				var pointAtDist = dSteps(basePoint, distance);
 				var sizeNear = STD_SIZE / (distance < 0.2 ? 0.01 : (distance - 0.2));
 				var sizeAway = STD_SIZE / (distance + 0.8);
@@ -69,7 +69,7 @@ module Mz {
 					f(-lr, -df);
 				}
 				function drawAway(alr, adf) {
-					var room = Mz.Field.at(top(right(pointAtDist, alr), adf));
+					var room = Field.at(top(right(pointAtDist, alr), adf));
 					if (room
 						&& room.hasAwayWall(direction)) {
 						var p1x = convX(alr, sizeAway);
@@ -82,8 +82,8 @@ module Mz {
 							, room.color);
 					}
 				}
-				function drawSide(blr, bdf) {
-					var room = Mz.Field.at(top(right(pointAtDist, blr), bdf));
+				function drawSide(blr :number, bdf :number) {
+					var room = Field.at(top(right(pointAtDist, blr), bdf));
 					if (room) {
 						if (blr <= 0) {
 							drawLeft();
@@ -142,7 +142,17 @@ module Mz {
 			}
 		}
 
-		function fillWall(x1, y1, x2, y2, x3, y3, x4, y4, darkness, color) {
+		function fillWall(
+				x1 :number,
+				y1 :number,
+				x2 :number,
+				y2 :number,
+				x3 :number,
+				y3 :number,
+				x4 :number,
+				y4 :number,
+				darkness :number,
+				color :Common.Color) {
 			context.beginPath();
 			context.strokeStyle = "#c0c0c0";
 			var x = Math.pow(0.90, darkness);
