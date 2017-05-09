@@ -60,7 +60,7 @@ module Mz {
         messageToShow(this.message, pos, d));
     }
     toJsonString() :string {
-      return ["e", this.title, this.message].join("/");
+      return ["g", this.title, this.message].join("/");
     }
     toString() :string {
       return "(GOAL)" + this.title + "[" + this.message + "]";

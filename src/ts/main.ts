@@ -46,7 +46,7 @@ $(function() {
       value: item
     };
   }
-  function loadMap(key) {
+  function loadMap(key :string) {
     UIParts.UserConfirm("迷路の初期化", "迷路 " + key + " をロードします。",
       (callback :Common.Callback)=> {
         Mz.IO.load(key);

@@ -59,6 +59,7 @@ module Mz {
 				this.x = x;
 				this.y = y;
 				this.obj = floorObj.rooms[z][y][x];
+				this._normalEvents = [];
 				this.walls = [
 					west(this),
 					east(this),

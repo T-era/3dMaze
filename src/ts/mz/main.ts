@@ -4,11 +4,11 @@
 /// <reference path="event.ts" />
 
 module Mz {
-	var once :boolean = false;
+	var keyEventPrepared :boolean = false;
 	var canvas :HTMLCanvasElement;
 	var context :CanvasRenderingContext2D;
 	var clickListening = true;
-	var isGoal = true;
+	var isGoal = false;
 
 	export var Obj :DrawingRoot = {
 		enable: setEnable,
@@ -18,11 +18,13 @@ module Mz {
 			canvas = <HTMLCanvasElement>$("#main")[0];
 			context = <CanvasRenderingContext2D>canvas.getContext("2d");
 			this.direction = Mz.Directions.South;
+			isGoal = false;
+			clickListening = true;
 
 			Mz.drawAll(Obj, canvas, context);
-			if (!once) {
+			if (!keyEventPrepared) {
 				$(window).keyup(keyListen);
-				once = true;
+				keyEventPrepared = true;
 			}
 		},
 		repaint: function() {
