@@ -39,7 +39,7 @@ module Mz {
             this.startCheck.prop("checked", Mz.Edit.startPoint.x == arg.x
               && Mz.Edit.startPoint.y == arg.y
               && Mz.Edit.startPoint.z == arg.floor.z);
-            this.goalCheck.prop("checked", arg.isGoal());
+            this.goalCheck.prop("checked", Boolean(arg.isGoal()));
           } else {
             this.startCheck.prop("checked", false);
             this.goalCheck.prop("checked", false);
