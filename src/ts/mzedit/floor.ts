@@ -1,5 +1,6 @@
 /// <reference path="../../lib/jquery/jquery.d.ts" />
 /// <reference path="wall.ts" />
+/// <reference path="event/event_marker.ts" />
 
 module Mz {
 	export module Edit {
@@ -34,6 +35,8 @@ module Mz {
 					for (var x = 0; x < this.cols; x ++) {
 						var room = new Room(this, x, y, this.z, this.roomPointed)
 							.appendTo(owner);
+						// room.eventMarker
+						console.log('hogehogetest')
 						this.roomDivs.push(room);
 					}
 				}
@@ -43,6 +46,9 @@ module Mz {
 					room.resetColor();
 				});
 			}
+			at(x :number, y :number) :Room {
+				return this.roomDivs[y * this.cols + x];
+			}
 		}
 		export class Room {
 			x :number;
@@ -50,6 +56,7 @@ module Mz {
 			floor :Floor;
 			dom :JQuery;
 			walls: Wall[];
+			eventMarker :EventMarker;
 			obj :Mz.IRoom;
 			_isGoal :boolean;
 			_normalEvents :Mz.Event[];
@@ -59,6 +66,7 @@ module Mz {
 				this.x = x;
 				this.y = y;
 				this.obj = floorObj.rooms[z][y][x];
+				this.eventMarker = new EventMarker(this.obj.Events);
 				this._normalEvents = [];
 				this.walls = [
 					west(this),
@@ -77,6 +85,7 @@ module Mz {
 						fPointed(this)
 					});
 				this.dom = dom;
+				this.dom.append(this.eventMarker.dom);
 				for (var i = 0, max = this.walls.length; i < max; i ++) {
 					this.dom.append(this.walls[i].div);
 				}
@@ -105,10 +114,12 @@ module Mz {
 
 					this.__copyEventToObj();
 				}
+				this.eventMarker.setGoal(Boolean(arg));
 				return this._isGoal;
 			}
 			addNormalEvent(arg :Mz.Event) {
 				this._normalEvents.push(arg);
+				this.eventMarker.setEvent(this._normalEvents);
 
 				this.__copyEventToObj();
 			}
@@ -120,6 +131,7 @@ module Mz {
 					}
 				}
 				this._normalEvents.splice(index, 1);
+				this.eventMarker.setEvent(this._normalEvents);
 
 				this.__copyEventToObj();
 			}

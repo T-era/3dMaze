@@ -7,7 +7,7 @@ module Mz {
 			owner :JQuery;
 			floorList :Mz.Edit.Floor[];
 
-			constructor(cols :number, rows :number, floors :number, owner :JQuery, rooms, listener :RoomPointedListener) {
+			constructor(cols :number, rows :number, floors :number, owner :JQuery, rooms :Mz.IRoom[][][], listener :RoomPointedListener) {
 				this.owner = owner;
 				this.floorList = [];
 				for (var z = 0; z < floors; z ++) {
@@ -17,6 +17,9 @@ module Mz {
 				function createFloor(z) {
 					return new Mz.Edit.Floor(cols, rows, floors, rooms, z, listener);
 				}
+			}
+			at(pos :Mz.Position) :Room {
+				return this.floorList[pos.z].at(pos.x, pos.y);
 			}
 
 			setFloor(z :number) {

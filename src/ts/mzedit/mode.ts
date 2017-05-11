@@ -21,8 +21,15 @@ module Mz {
 		var floorSelector :UIParts.ComplexSelect<number>;
 		var selectedRoom :Room;
 		var roomChangeListeners :Common.Func<Mz.Edit.Room>[] = [];
-		export var startPoint :Mz.Position = {x:0,y:0,z:0};
-
+	 	var startPoint :Mz.Position = {x:0,y:0,z:0};
+		export function getStartPoint() { return startPoint; };
+		export function setStartPoint(arg :Mz.Position) {
+			if (startPoint) {
+				rooms.at(startPoint).eventMarker.setStart(false);
+			}
+			startPoint = arg;
+			rooms.at(startPoint).eventMarker.setStart(true);
+		}
 		export interface EditModeType {
 			save();
 			initEmpty(arg :Mz.Init.InitSetting);
@@ -76,6 +83,9 @@ module Mz {
 			}
 			selectFloor(val :number) {
 				rooms.setFloor(val);
+				if (val === startPoint.z) {
+					rooms.at(startPoint).eventMarker.setStart(true);
+				}
 				resetColor();
 				fireRoomChange(null);
 
