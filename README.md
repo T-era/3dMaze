@@ -1,4 +1,6 @@
 3D Maze & Editor
+
+on TypeScript 1.5
 ===
 #3D Maze:  
 * 左右ボタンで、回転します。（その場で回転)
@@ -17,3 +19,9 @@
         自分で作って自分で迷う。人生そのものです。
 * Step4. 以前に作った迷路を変更したい場合、Javascriptコードをテキストエリアに貼り付けて、Importボタンを押してください。  
  　      与えられたJavascriptコードはevalします。あまり変なコードを指定すると何かがおきます。自己責任でお願いします。
+
+===
+# How to build
+* Typescript 1.5.3 の頃に書いています。
+  * JQuery, JQueryUI に依存しています。DefinitelyTyped の1系向けのブランチから ****.d.ts をダウンロードして、lib/jquery/, lib/jqueryui/ に配置します。
+* build.sh を実行します。

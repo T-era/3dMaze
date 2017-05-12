@@ -1,5 +1,5 @@
 /// <reference path="../../lib/jquery/jquery.d.ts" />
-/// <reference path="../../lib/jquery/jqueryui.d.ts" />
+/// <reference path="../../lib/jqueryui/jqueryui.d.ts" />
 /// <reference path="../../lib/common.d.ts" />
 
 module UIParts {

@@ -36,7 +36,6 @@ module Mz {
 						var room = new Room(this, x, y, this.z, this.roomPointed)
 							.appendTo(owner);
 						// room.eventMarker
-						console.log('hogehogetest')
 						this.roomDivs.push(room);
 					}
 				}
