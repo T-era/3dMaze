@@ -61,6 +61,7 @@ module Mz {
       function createEvent(event :Mz.Event) {
         openEdit(event, ()=> {
           ownerRoom.addNormalEvent(event);
+          ownerRoom.resetColor();
           onChangeCallback();
         });
       }

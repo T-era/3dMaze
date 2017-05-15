@@ -106,6 +106,8 @@ module Mz {
 				for (var i = 0, max = this.walls.length; i < max; i ++) {
 					this.walls[i].resetColor();
 				}
+				this.eventMarker.setGoal(this._isGoal);
+				this.eventMarker.setEvent(this._normalEvents);
 			}
 			isGoal(arg :boolean = null) {
 				if (arg != null) {
@@ -113,12 +115,10 @@ module Mz {
 
 					this.__copyEventToObj();
 				}
-				this.eventMarker.setGoal(Boolean(arg));
 				return this._isGoal;
 			}
 			addNormalEvent(arg :Mz.Event) {
 				this._normalEvents.push(arg);
-				this.eventMarker.setEvent(this._normalEvents);
 
 				this.__copyEventToObj();
 			}
@@ -130,7 +130,6 @@ module Mz {
 					}
 				}
 				this._normalEvents.splice(index, 1);
-				this.eventMarker.setEvent(this._normalEvents);
 
 				this.__copyEventToObj();
 			}

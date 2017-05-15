@@ -74,6 +74,7 @@ module Mz {
         goalHere() {
           if (this.target) {
             this.target.isGoal(this.goalCheck.prop("checked"));
+            this.target.resetColor();
           } else {
             this.goalCheck.prop("checked", false);
           }
@@ -111,6 +112,7 @@ module Mz {
                 .text("削除")
                 .click(()=> {
                   room.removeNormalEvent(event);
+                  room.resetColor();
                   whenRemove();
                   return false;
                 }),
