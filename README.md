@@ -2,12 +2,12 @@
 
 on TypeScript 1.5
 ===
-#3D Maze:  
+# 3D Maze:  
 * 左右ボタンで、回転します。（その場で回転)
 * スペースキーで、一歩前進します。
 * 上下ボタンで、上下の階に移動します。
 
-#Maze Editor:
+# Maze Editor:
 * Step1. まずは迷路のサイズを決めます。
 * Step2. 次の画面で地図が表示されます。黒線が描かれている部分には壁があります。  
         地図上をクリックすることで壁を追加/削除できます。  
@@ -20,8 +20,13 @@ on TypeScript 1.5
 * Step4. 以前に作った迷路を変更したい場合、Javascriptコードをテキストエリアに貼り付けて、Importボタンを押してください。  
  　      与えられたJavascriptコードはevalします。あまり変なコードを指定すると何かがおきます。自己責任でお願いします。
 
-===
+----
+
 # How to build
 * Typescript 1.5.3 の頃に書いています。
   * JQuery, JQueryUI に依存しています。DefinitelyTyped の1系向けのブランチから ****.d.ts をダウンロードして、lib/jquery/, lib/jqueryui/ に配置します。
 * build.sh を実行します。
+
+----
+
+https://ytel.up.seesaa.net/mz/index.html
