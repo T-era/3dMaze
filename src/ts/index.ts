@@ -1,13 +1,13 @@
-/// <reference path="../lib/jquery/jquery.d.ts" />
-/// <reference path="../lib/uiparts.d.ts" />
-/// <reference path="../lib/mzedit.d.ts" />
-/// <reference path="../lib/mzinit.d.ts" />
-/// <reference path="../lib/storage.d.ts" />
-/// <reference path="../lib/mz.d.ts" />
+import { Common } from './common';
+import { ComplexSelect, UserConfirm } from './uiparts';
+import { MzIO } from './storage';
+import { MzInit } from './mzinit';
+import { Mz } from './mz';
+import { MzEdit, openEditEvent as openEdit } from './mzedit';
 
 $(function() {
-  var cs = new UIParts.ComplexSelect($("#saved_maps"), loadMap);
-  cs.setLoader(Mz.IO.saveDataList(toSelectItem));
+  var cs = new ComplexSelect($("#saved_maps"), loadMap);
+  cs.setLoader(MzIO.saveDataList(toSelectItem));
   cs.reload();
 
   function toSelectItem(item) {
@@ -22,9 +22,9 @@ $(function() {
             height: "16px",
             background: "#fdd" })
           .click(()=> {
-            UIParts.UserConfirm("迷路の削除", "迷路 " + item + " を削除します。",
+            UserConfirm("迷路の削除", "迷路 " + item + " を削除します。",
               (callback:Common.Callback)=> {
-                Mz.IO.removeMap(item);
+                MzIO.removeMap(item);
                 cs.reload();
                 callback();
               },
@@ -38,8 +38,8 @@ $(function() {
           .css({
             height: "16px" })
           .click(()=> {
-            var obj = Mz.IO.loadRawJson(item);
-            Mz.Edit.openEdit(item, obj);
+            var obj = MzIO.loadRawJson(item);
+            MzEdit.openEdit(item, obj);
             return false;
           })
       ],
@@ -47,9 +47,9 @@ $(function() {
     };
   }
   function loadMap(key :string) {
-    UIParts.UserConfirm("迷路の初期化", "迷路 " + key + " をロードします。",
+    UserConfirm("迷路の初期化", "迷路 " + key + " をロードします。",
       (callback :Common.Callback)=> {
-        Mz.IO.load(key);
+        MzIO.load(key);
         Mz.Obj.onLoad();
         callback();
       },
@@ -58,8 +58,8 @@ $(function() {
       });
   }
   $("#main_new_button").click(()=> {
-    Mz.Init.openBaseSetting("新しい迷路を作成",
-      (setting :Mz.Init.InitSetting, callback :Common.Callback)=> {
+    MzInit.openBaseSetting("新しい迷路を作成",
+      (setting :MzInit.InitSetting, callback :Common.Callback)=> {
         if (createNewMap(setting)) {
           callback();
         }
@@ -73,9 +73,9 @@ $(function() {
     if (setting.ySize < 1) { alert("迷路の広さ y を指定して！"); return false; }
     if (setting.zSize < 1) { alert("迷路の広さ z を指定して！"); return false; }
     if (! setting.name) { alert("迷路に名前をつけて！"); return false; }
-    if (Mz.IO.existsName(setting.name)) { alert("その名前の迷路は作れない！\n(おなじ名前の迷路が既に登録されていかも)"); return false; }
+    if (MzIO.existsName(setting.name)) { alert("その名前の迷路は作れない！\n(おなじ名前の迷路が既に登録されていかも)"); return false; }
 
-    Mz.Edit.toEdit(setting,
+    MzEdit.toEdit(setting,
       ()=> {
         cs.reload();
       }

@@ -1,4 +1,8 @@
-module Mz {
+import { Common } from '../common';
+
+import { Room } from './room';
+
+export module Types {
   export enum EnableState {
     Start, Suspend, Restart, Goal
   }
@@ -13,12 +17,12 @@ module Mz {
     Events: Event[];
   }
   export interface DrawingRoot {
-		direction :Direction;
-		here :Position;
+    direction :Direction;
+    here :Position;
     onLoad();
     enable(boolean);
     repaint();
-	}
+  }
   export interface FullDirection {
     North: Direction;
     South: Direction;
@@ -30,11 +34,11 @@ module Mz {
     right(p :Position, n :number) :Position;
     toJpStr() :string;
   }
-	export interface Position {
-		x:number;
-		y:number;
-		z:number;
-	}
+  export interface Position {
+    x:number;
+    y:number;
+    z:number;
+  }
   export interface Event {
     proc(pos :Position, d :Direction, eventsRemain :Common.Callback);
     toJsonString() :string;
@@ -46,7 +50,7 @@ module Mz {
     eve :string[];
   }
   export interface JsonData {
-    start :Mz.Position;
+    start :Position;
     baseColors :Common.Color[];
     fields :JSRoom[][][];
   }

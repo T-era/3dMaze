@@ -1,20 +1,4 @@
-module Common {
-  if (! Array.prototype.forEach) {
-    Array.prototype.forEach = function(f :(any)=>void) {
-      for (var i = 0, max = this.length; i < max; i ++) {
-        f(this[i]);
-      }
-    }
-  }
-  if (! Array.prototype.map) {
-    Array.prototype.map = function<S>(f :(any)=>S) :S[] {
-      var list :S[] = [];
-      for (var i = 0, max = this.length; i < max; i ++) {
-        list.push(f(this[i]));
-      }
-      return list;
-    }
-  }
+export module Common {
   export class Color {
     r: number;
     g: number;

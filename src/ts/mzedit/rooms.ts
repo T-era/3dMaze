@@ -1,32 +1,30 @@
-/// <reference path="../../lib/jquery/jquery.d.ts" />
-/// <reference path="floor.ts" />
+import { Types } from '../mz';
 
-module Mz {
-	export module Edit {
-		export class Rooms {
-			owner :JQuery;
-			floorList :Mz.Edit.Floor[];
+import { RoomEditor, RoomPointedListener } from './room';
+import { FloorEditor } from './floor';
 
-			constructor(cols :number, rows :number, floors :number, owner :JQuery, rooms :Mz.IRoom[][][], listener :RoomPointedListener) {
-				this.owner = owner;
-				this.floorList = [];
-				for (var z = 0; z < floors; z ++) {
-					this.floorList.push(createFloor(z));
-				}
+export class RoomsEditor {
+	owner :JQuery;
+	floorList :FloorEditor[];
 
-				function createFloor(z) {
-					return new Mz.Edit.Floor(cols, rows, floors, rooms, z, listener);
-				}
-			}
-			at(pos :Mz.Position) :Room {
-				return this.floorList[pos.z].at(pos.x, pos.y);
-			}
-
-			setFloor(z :number) {
-				this.owner.children().remove();
-				this.floorList[z].init(this.owner);
-				this.floorList[z].repaint();
-			}
+	constructor(cols :number, rows :number, floors :number, owner :JQuery, rooms :Types.IRoom[][][], listener :RoomPointedListener) {
+		this.owner = owner;
+		this.floorList = [];
+		for (var z = 0; z < floors; z ++) {
+			this.floorList.push(createFloor(z));
 		}
+
+		function createFloor(z) {
+			return new FloorEditor(cols, rows, floors, rooms, z, listener);
+		}
+	}
+	at(pos :Types.Position) :RoomEditor {
+		return this.floorList[pos.z].at(pos.x, pos.y);
+	}
+
+	setFloor(z :number) {
+		this.owner.children().remove();
+		this.floorList[z].init(this.owner);
+		this.floorList[z].repaint();
 	}
 }

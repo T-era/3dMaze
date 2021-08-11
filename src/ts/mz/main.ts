@@ -1,47 +1,50 @@
-/// <reference path="../../lib/jquery/jquery.d.ts" />
-/// <reference path="../../lib/uiparts.d.ts" />
-/// <reference path="draw.ts" />
-/// <reference path="event.ts" />
+import { Alert } from '../uiparts';
 
-module Mz {
+import { drawAll } from './draw';
+import { Event } from './event';
+import { Types } from './types';
+import { Directions } from './directions';
+import { Field } from './field';
+
+export module Mz {
 	var keyEventPrepared :boolean = false;
 	var canvas :HTMLCanvasElement;
 	var context :CanvasRenderingContext2D;
 	var clickListening = true;
 	var isGoal = false;
 
-	export var Obj :DrawingRoot = {
+	export var Obj :Types.DrawingRoot = {
 		enable: setEnable,
 		here: { x: 0, y: 0, z: 0 },
 		direction: null,
 		onLoad: function() {
 			canvas = <HTMLCanvasElement>$("#main")[0];
 			context = <CanvasRenderingContext2D>canvas.getContext("2d");
-			this.direction = Mz.Directions.South;
+			this.direction = Directions.South;
 			isGoal = false;
 			clickListening = true;
 
-			Mz.drawAll(Obj, canvas, context);
+			drawAll(Obj, canvas, context);
 			if (!keyEventPrepared) {
 				$(window).keyup(keyListen);
 				keyEventPrepared = true;
 			}
 		},
 		repaint: function() {
-			Mz.drawAll(Obj, canvas, context);
+			drawAll(Obj, canvas, context);
 		}
 	};
 
-	function setEnable(state :EnableState) {
-		if (state == EnableState.Start) {
+	function setEnable(state :Types.EnableState) {
+		if (state == Types.EnableState.Start) {
 			isGoal = false;
 			clickListening = true;
-		} else if (state == EnableState.Goal) {
+		} else if (state == Types.EnableState.Goal) {
 			isGoal = true;
 			clickListening = false;
-		} else if (state == EnableState.Suspend) {
+		} else if (state == Types.EnableState.Suspend) {
 			clickListening = false;
-		} else if (state == EnableState.Restart) {
+		} else if (state == Types.EnableState.Restart) {
 			if (! isGoal) {
 				clickListening = true;
 			}
@@ -53,20 +56,20 @@ module Mz {
 			&& arg.target.tagName.toLowerCase() == "body") {
 			switch (arg.keyCode) {
 				case 37:
-					Obj.direction = Obj.direction == Mz.Directions.North ? Mz.Directions.West
-								: Obj.direction == Mz.Directions.South ? Mz.Directions.East
-								: Obj.direction == Mz.Directions.East ? Mz.Directions.North
-								: Obj.direction == Mz.Directions.West ? Mz.Directions.South
+					Obj.direction = Obj.direction == Directions.North ? Directions.West
+								: Obj.direction == Directions.South ? Directions.East
+								: Obj.direction == Directions.East ? Directions.North
+								: Obj.direction == Directions.West ? Directions.South
 								: null;
-					Mz.drawAll(Obj, canvas, context);
+					drawAll(Obj, canvas, context);
 					break;
 				case 39:
-					Obj.direction = Obj.direction == Mz.Directions.North ? Mz.Directions.East
-								: Obj.direction == Mz.Directions.South ? Mz.Directions.West
-								: Obj.direction == Mz.Directions.East ? Mz.Directions.South
-								: Obj.direction == Mz.Directions.West ? Mz.Directions.North
+					Obj.direction = Obj.direction == Directions.North ? Directions.East
+								: Obj.direction == Directions.South ? Directions.West
+								: Obj.direction == Directions.East ? Directions.South
+								: Obj.direction == Directions.West ? Directions.North
 								: null;
-					Mz.drawAll(Obj, canvas, context);
+					drawAll(Obj, canvas, context);
 					break;
 				case 38:
 					moveTo(function(room) { return room.hasCeil; }
@@ -84,18 +87,18 @@ module Mz {
 		}
 		function moveTo(checker, move) {
 			var p = Obj.here;
-			var room = Mz.Field.at(p);
+			var room = Field.at(p);
 
 			if (room && checker(room)) {
-				UIParts.Alert("Oops!", "壁がある！");
+				Alert("Oops!", "壁がある！");
 			} else {
 				var next = move(p);
-				//if (Mz.Field.at(next)) { // Check outbound.
+				//if (Field.at(next)) { // Check outbound.
 					Obj.here = next;
 				//}
-				Mz.drawAll(Obj, canvas, context);
+				drawAll(Obj, canvas, context);
 
-				Mz.fireEvents(Mz.Field.at(Obj.here).events, Obj);
+				Event.fireEvents(Field.at(Obj.here).events, Obj);
 			}
 		}
 	}

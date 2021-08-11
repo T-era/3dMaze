@@ -1,22 +1,28 @@
-/// <reference path="main.ts" />
+import { Common } from '../common';
+import { Alert } from '../uiparts';
 
-module Mz {
-  export function fireEvents(list :Event[], dr :DrawingRoot) {
-    Mz.Obj.enable(Mz.EnableState.Suspend);
+import { Types } from './types';
+import { Directions } from './directions';
+import { Field } from './field';
+import { Mz } from './main';
+
+export module Event {
+  export function fireEvents(list :Types.Event[], dr :Types.DrawingRoot) {
+    Mz.Obj.enable(Types.EnableState.Suspend);
     fireEventQueue(list.slice());
 
-    function fireEventQueue(queue :Event[]) {
+    function fireEventQueue(queue :Types.Event[]) {
       if (queue.length > 0) {
         var event = queue.shift();
         event.proc(dr.here, dr.direction, function() {
           fireEventQueue(queue);
         });
       } else {
-        Mz.Obj.enable(Mz.EnableState.Restart);
+        Mz.Obj.enable(Types.EnableState.Restart);
       }
     }
   }
-  export function readEvent(arg :string) :Event {
+  export function readEvent(arg :string) :Types.Event {
     var parts = arg.split("/");
     var type = parts[0];
     switch(type) {
@@ -38,13 +44,13 @@ module Mz {
     }
     function stringToDirection(arg :string) {
       if (arg == null) return null;
-      else if (arg == "n") return Mz.Directions.North;
-      else if (arg == "s") return Mz.Directions.South;
-      else if (arg == "e") return Mz.Directions.East;
-      else if (arg == "w") return Mz.Directions.West;
+      else if (arg == "n") return Directions.North;
+      else if (arg == "s") return Directions.South;
+      else if (arg == "e") return Directions.East;
+      else if (arg == "w") return Directions.West;
     }
   }
-  export class Goal implements Event {
+  export class Goal implements Types.Event {
     title: string;
     message :string;
     isNormal = false;
@@ -53,9 +59,9 @@ module Mz {
       this.title = title;
       this.message = message;
     }
-    proc(pos :Position, d, eventsRemain :Common.Callback) {
-      Mz.Obj.enable(Mz.EnableState.Goal);
-      UIParts.Alert(
+    proc(pos :Types.Position, d, eventsRemain :Common.Callback) {
+      Mz.Obj.enable(Types.EnableState.Goal);
+      Alert(
         messageToShow(this.title, pos, d),
         messageToShow(this.message, pos, d));
     }
@@ -66,7 +72,7 @@ module Mz {
       return "(GOAL)" + this.title + "[" + this.message + "]";
     }
   }
-  export class Messaging implements Event {
+  export class Messaging implements Types.Event {
     title: string;
     message :string;
     isNormal :boolean = true;
@@ -75,8 +81,8 @@ module Mz {
       this.title = title;
       this.message = message;
     }
-    proc(pos :Position, d :Direction, eventsRemain :Common.Callback) {
-      UIParts.Alert(
+    proc(pos :Types.Position, d :Types.Direction, eventsRemain :Common.Callback) {
+      Alert(
         messageToShow(this.title, pos, d),
         messageToShow(this.message, pos, d),
         function(howClose) {
@@ -91,19 +97,19 @@ module Mz {
       return this.title + "[" + this.message + "]";
     }
   }
-  export class Warp implements Event {
-    jumpTo :Position;
+  export class Warp implements Types.Event {
+    jumpTo :Types.Position;
     isNormal :boolean = true;
 
-    constructor(to :Position = null) {
+    constructor(to :Types.Position = null) {
       this.jumpTo = to;
     }
-    proc(pos :Position, d, eventsRemain :Common.Callback) {
+    proc(pos :Types.Position, d, eventsRemain :Common.Callback) {
       var to;
       if (this.jumpTo) {
         to = this.jumpTo;
       } else {
-        var size = Mz.Field.size()
+        var size = Field.size()
         to = {
           x: Math.floor(Math.random() * size.x),
           y: Math.floor(Math.random() * size.y),
@@ -123,30 +129,30 @@ module Mz {
         : "?");
     }
   }
-  export class TurnTable implements Event {
-    directionTo :Direction;
+  export class TurnTable implements Types.Event {
+    directionTo :Types.Direction;
     isNormal :boolean = true;
 
-    constructor(dir :Direction = null) {
+    constructor(dir :Types.Direction = null) {
       this.directionTo = dir;
     }
-    proc(pos :Position, d :Direction, eventsRemain :Common.Callback) {
+    proc(pos :Types.Position, d :Types.Direction, eventsRemain :Common.Callback) {
       var dir;
       if (this.directionTo) {
         dir = this.directionTo;
       } else {
         switch (Math.floor(Math.random()*4)) {
           case 0:
-            dir = Mz.Directions.North;
+            dir = Directions.North;
             break;
           case 1:
-            dir = Mz.Directions.South;
+            dir = Directions.South;
             break;
           case 2:
-            dir = Mz.Directions.East;
+            dir = Directions.East;
             break;
           case 3:
-            dir = Mz.Directions.West;
+            dir = Directions.West;
             break;
           default:
             throw "error";
@@ -158,10 +164,10 @@ module Mz {
     }
     toJsonString() :string {
       var headChar = this.directionTo == null ? null
-        : this.directionTo == Mz.Directions.North ? "n"
-        : this.directionTo == Mz.Directions.South ? "s"
-        : this.directionTo == Mz.Directions.East ? "e"
-        : this.directionTo == Mz.Directions.West ? "w"
+        : this.directionTo == Directions.North ? "n"
+        : this.directionTo == Directions.South ? "s"
+        : this.directionTo == Directions.East ? "e"
+        : this.directionTo == Directions.West ? "w"
         : null;
       return ["t", headChar].join("/");
     }
@@ -172,7 +178,7 @@ module Mz {
     }
   }
 
-  function messageToShow(format :string, pos :Position, dir) {
+  function messageToShow(format :string, pos :Types.Position, dir) {
     return format
       .replace(/\$X/, String(pos.x))
       .replace(/\$Y/, String(pos.y))
