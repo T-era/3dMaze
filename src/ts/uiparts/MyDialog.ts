@@ -8,6 +8,14 @@ $(function() {
 	dialog = $("<div>")
 		.appendTo($("body"))
 		.append(text);
+	$("head").append("<link>");
+	$("head")
+		.children(":last")
+		.attr({
+			rel: "stylesheet",
+			type: "text/css",
+			href: "my_dialog_style.css"
+		});
 });
 
 export function UserConfirm(
