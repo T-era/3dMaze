@@ -1,7 +1,10 @@
 3D Maze & Editor
+===
 
 on TypeScript 1.5
-===
+
+----
+
 # 3D Maze:  
 * 左右ボタンで、回転します。（その場で回転)
 * スペースキーで、一歩前進します。
@@ -23,9 +26,9 @@ on TypeScript 1.5
 ----
 
 # How to build
-* Typescript 1.5.3 の頃に書いています。
-  * JQuery, JQueryUI に依存しています。DefinitelyTyped の1系向けのブランチから ****.d.ts をダウンロードして、lib/jquery/, lib/jqueryui/ に配置します。
-* build.sh を実行します。
+
+* `npm run build`
+	* slimrb がインストールされていることが前提になっちゃっています
 
 ----
 

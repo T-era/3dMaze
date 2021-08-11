@@ -5,7 +5,7 @@
 		"build": "npm run clean:out && npm run build:webpack && npm run build:sass && npm run build:slim && npm run build:cp",
 		"clean:out": "rm -f dest/*",
 		"build:webpack": "webpack",
-		"build:cp": "cp static/* dest/",
+		"build:cp": "cp src/static/* dest/",
 		"build:sass": "node-sass --source-map true --output dest/ src/scss/mz.scss",
 		"build:slim": "slimrb src/slim/Main.slim > dest/index.html"
 	},
