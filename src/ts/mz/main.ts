@@ -1,6 +1,6 @@
 import { Alert } from '../uiparts';
 
-import { drawAll } from './draw';
+import { Drawer, init2d, initGl } from './draw';
 import { Event } from './event';
 import { Types } from './types';
 import { Directions } from './directions';
@@ -9,9 +9,9 @@ import { Field } from './field';
 export module Mz {
 	var keyEventPrepared :boolean = false;
 	var canvas :HTMLCanvasElement;
-	var context :CanvasRenderingContext2D;
 	var clickListening = true;
 	var isGoal = false;
+	var drawAll :Drawer;
 
 	export var Obj :Types.DrawingRoot = {
 		enable: setEnable,
@@ -19,21 +19,30 @@ export module Mz {
 		direction: null,
 		onLoad: function() {
 			canvas = <HTMLCanvasElement>$("#main")[0];
-			context = <CanvasRenderingContext2D>canvas.getContext("2d");
+			drawAll = getDrawer(canvas);
 			this.direction = Directions.South;
 			isGoal = false;
 			clickListening = true;
 
-			drawAll(Obj, canvas, context);
+			drawAll(Obj);
 			if (!keyEventPrepared) {
 				$(window).keyup(keyListen);
 				keyEventPrepared = true;
 			}
 		},
 		repaint: function() {
-			drawAll(Obj, canvas, context);
+			drawAll(Obj);
 		}
 	};
+	function getDrawer(canvas :HTMLCanvasElement) :Drawer {
+		let glContext = null; //canvas.getContext('webgl');
+		if (glContext) {
+			return initGl(canvas, glContext);
+		} else {
+			let tdContext = canvas.getContext("2d");
+			return init2d(canvas, tdContext);
+		}
+	}
 
 	function setEnable(state :Types.EnableState) {
 		if (state == Types.EnableState.Start) {
@@ -61,7 +70,7 @@ export module Mz {
 								: Obj.direction == Directions.East ? Directions.North
 								: Obj.direction == Directions.West ? Directions.South
 								: null;
-					drawAll(Obj, canvas, context);
+					drawAll(Obj);
 					break;
 				case 39:
 					Obj.direction = Obj.direction == Directions.North ? Directions.East
@@ -69,7 +78,7 @@ export module Mz {
 								: Obj.direction == Directions.East ? Directions.South
 								: Obj.direction == Directions.West ? Directions.North
 								: null;
-					drawAll(Obj, canvas, context);
+					drawAll(Obj);
 					break;
 				case 38:
 					moveTo(function(room) { return room.hasCeil; }
@@ -96,7 +105,7 @@ export module Mz {
 				//if (Field.at(next)) { // Check outbound.
 					Obj.here = next;
 				//}
-				drawAll(Obj, canvas, context);
+				drawAll(Obj);
 
 				Event.fireEvents(Field.at(Obj.here).events, Obj);
 			}
