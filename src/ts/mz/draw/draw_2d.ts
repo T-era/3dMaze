@@ -60,9 +60,9 @@ export function init2d(canvas :HTMLCanvasElement, context :CanvasRenderingContex
 				var pointAtDist = dSteps(basePoint, distance);
 				var sizeNear = STD_SIZE / (distance < 0.2 ? 0.01 : (distance - 0.2));
 				var sizeAway = STD_SIZE / (distance + 0.8);
-				drawAll(drawAwayAndSide);
+				drawADistance(drawAwayAndSide);
 
-				function drawAll(f) {
+				function drawADistance(f) {
 					f(lr, df);
 					f(-lr, df);
 					f(lr, -df);

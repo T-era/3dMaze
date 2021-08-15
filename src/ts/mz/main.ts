@@ -35,7 +35,7 @@ export module Mz {
 		}
 	};
 	function getDrawer(canvas :HTMLCanvasElement) :Drawer {
-		let glContext = null; //canvas.getContext('webgl');
+		let glContext = canvas.getContext('webgl');
 		if (glContext) {
 			return initGl(canvas, glContext);
 		} else {
