@@ -146,7 +146,7 @@ function createField(xmax :number, ymax :number) :Types.JSRoom[][] {
 		ret[y] = [];
 		ret[y].length = xmax;
 		for (var x = 0; x < xmax; x ++) {
-			ret[y][x] = {num:0, col: null, eve: [] };
+			ret[y][x] = {num:63, col: null, eve: [] };
 		}
 	}
 	return ret;
