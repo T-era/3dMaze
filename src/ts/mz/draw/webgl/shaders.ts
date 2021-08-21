@@ -13,16 +13,17 @@ attribute vec4 position;
 uniform vec3 base_color;
 uniform float turbidity;
 uniform float max_depth;
+uniform float aspect_ratio;
 varying vec4 vColor;
 
 void main ()
 {
-	float lz = (max_depth - position.z) / (max_depth + position.z);
-	float ratio = pow(lz, 4.0);
+	float lz = position.z + 1.0;
+	float ratio = 1.0 / lz;
 	gl_Position = vec4(
-		position.x * ratio * 2.8,
+		position.x * ratio * 2.0 / aspect_ratio,
 		- position.y * ratio * 2.0,
-		lz,
+		min(lz, 0.0),
 		1.0);
 	float distance = position.x * position.x
 			+ position.y * position.y

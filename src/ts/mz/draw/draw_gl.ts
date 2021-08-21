@@ -49,7 +49,7 @@ export function initGl(canvas :HTMLCanvasElement, gl :WebGLRenderingContext) :Dr
 		}
 		function convPos(pos) {
 			return {
-				x: pos.x * 0.8,
+				x: pos.x,
 				y: pos.y,
 				z: pos.z
 			};
@@ -123,28 +123,10 @@ export function initGl(canvas :HTMLCanvasElement, gl :WebGLRenderingContext) :Dr
 				function drawAway(room, alr, adf) {
 					if (room.hasAwayWall(direction)) {
 						mzPolygon.rectangles.push({
-							topLeft: { x: alr - 0.5, y: adf - 0.5, z: distance + 1 },
-							bottomLeft: { x: alr - 0.5, y: adf, z: distance + 1 },
-							topRight: { x: alr, y: adf - 0.5, z: distance + 1 },
-							bottomRight: { x: alr, y: adf, z: distance + 1 }
-						});
-						mzPolygon.rectangles.push({
-							topLeft: { x: alr - 0.5, y: adf, z: distance + 1 },
-							bottomLeft: { x: alr - 0.5, y: adf + 0.5, z: distance + 1 },
-							topRight: { x: alr, y: adf, z: distance + 1 },
-							bottomRight: { x: alr, y: adf + 0.5, z: distance + 1 }
-						});
-						mzPolygon.rectangles.push({
-							topLeft: { x: alr , y: adf - 0.5, z: distance + 1 },
-							bottomLeft: { x: alr, y: adf, z: distance + 1 },
-							topRight: { x: alr + 0.5, y: adf - 0.5, z: distance + 1 },
-							bottomRight: { x: alr + 0.5, y: adf, z: distance + 1 }
-						});
-						mzPolygon.rectangles.push({
-							topLeft: { x: alr , y: adf, z: distance + 1 },
-							bottomLeft: { x: alr, y: adf + 0.5, z: distance + 1 },
-							topRight: { x: alr + 0.5, y: adf, z: distance + 1 },
-							bottomRight: { x: alr + 0.5, y: adf + 0.5, z: distance + 1 }
+							topLeft: { x: alr - 0.5, y: adf - 0.5, z: distance + 0.5 },
+							bottomLeft: { x: alr - 0.5, y: adf + 0.5, z: distance + 0.5 },
+							topRight: { x: alr + 0.5, y: adf - 0.5, z: distance + 0.5 },
+							bottomRight: { x: alr + 0.5, y: adf + 0.5, z: distance + 0.5 }
 						});
 					}
 				}
@@ -164,40 +146,40 @@ export function initGl(canvas :HTMLCanvasElement, gl :WebGLRenderingContext) :Dr
 					function drawLeft() {
 						if (room.hasLeftWall(direction)) {
 							mzPolygon.rectangles.push({
-								topLeft: { x: alr - 0.5, y: adf - 0.5, z: distance },
-								topRight: { x: alr - 0.5, y: adf - 0.5, z: distance + 1 },
-								bottomLeft: { x: alr - 0.5, y: adf + 0.5, z: distance },
-								bottomRight: { x: alr - 0.5, y: adf + 0.5, z: distance + 1 }
+								topLeft: { x: alr - 0.5, y: adf - 0.5, z: distance - 0.5},
+								topRight: { x: alr - 0.5, y: adf - 0.5, z: distance + 0.5 },
+								bottomLeft: { x: alr - 0.5, y: adf + 0.5, z: distance - 0.5 },
+								bottomRight: { x: alr - 0.5, y: adf + 0.5, z: distance + 0.5 }
 							});
 						}
 					}
 					function drawRight() {
 						if (room.hasRightWall(direction)) {
 							mzPolygon.rectangles.push({
-								topLeft: { x: alr + 0.5, y: adf - 0.5, z: distance },
-								topRight: { x: alr + 0.5, y: adf - 0.5, z: distance + 1 },
-								bottomLeft: { x: alr + 0.5, y: adf + 0.5, z: distance },
-								bottomRight: { x: alr + 0.5, y: adf + 0.5, z: distance + 1 }
+								topLeft: { x: alr + 0.5, y: adf - 0.5, z: distance - 0.5},
+								topRight: { x: alr + 0.5, y: adf - 0.5, z: distance + 0.5 },
+								bottomLeft: { x: alr + 0.5, y: adf + 0.5, z: distance - 0.5},
+								bottomRight: { x: alr + 0.5, y: adf + 0.5, z: distance + 0.5 }
 							});
 						}
 					}
 					function drawBottom() {
 						if (room.hasFloor) {
 							mzPolygon.rectangles.push({
-								topLeft: { x: alr - 0.5, y: adf + 0.5, z: distance },
-								bottomLeft: { x: alr - 0.5, y: adf + 0.5, z: distance + 1 },
-								topRight: { x: alr + 0.5, y: adf + 0.5, z: distance },
-								bottomRight: { x: alr + 0.5, y: adf + 0.5, z: distance + 1 }
+								topLeft: { x: alr - 0.5, y: adf + 0.5, z: distance - 0.5 },
+								bottomLeft: { x: alr - 0.5, y: adf + 0.5, z: distance + 0.5 },
+								topRight: { x: alr + 0.5, y: adf + 0.5, z: distance - 0.5 },
+								bottomRight: { x: alr + 0.5, y: adf + 0.5, z: distance + 0.5 }
 							});
 						}
 					}
 					function drawTop() {
 						if (room.hasCeil) {
 							mzPolygon.rectangles.push({
-								topLeft: { x: alr - 0.5, y: adf - 0.5, z: distance },
-								bottomLeft: { x: alr - 0.5, y: adf - 0.5, z: distance + 1 },
-								topRight: { x: alr + 0.5, y: adf - 0.5, z: distance },
-								bottomRight: { x: alr + 0.5, y: adf - 0.5, z: distance + 1 }
+								topLeft: { x: alr - 0.5, y: adf - 0.5, z: distance - 0.5 },
+								bottomLeft: { x: alr - 0.5, y: adf - 0.5, z: distance + 0.5 },
+								topRight: { x: alr + 0.5, y: adf - 0.5, z: distance - 0.5 },
+								bottomRight: { x: alr + 0.5, y: adf - 0.5, z: distance + 0.5 }
 							});
 						}
 					}

@@ -60,6 +60,7 @@ export module PolygonShader {
 		baseColorUniformLocation :WebGLUniformLocation;
 		turbidityUniformLocation :WebGLUniformLocation;
 		maxDepthUniformLocation :WebGLUniformLocation;
+		aspectRatioUniformLocation :WebGLUniformLocation;
 
 		constructor(init :Initializer) {
 			this.gl = init.gl;
@@ -67,9 +68,11 @@ export module PolygonShader {
 			this.maxDepth = init.maxDepth;
 
 			this.canvasAspect = init.canvasWidth / init.canvasHeight;
-			this.baseColorUniformLocation = this.gl.getUniformLocation(this.program, 'base_color')
-			this.turbidityUniformLocation = this.gl.getUniformLocation(this.program, 'turbidity')
-			this.maxDepthUniformLocation = this.gl.getUniformLocation(this.program, 'max_depth')
+			this.baseColorUniformLocation = this.gl.getUniformLocation(this.program, 'base_color');
+			this.turbidityUniformLocation = this.gl.getUniformLocation(this.program, 'turbidity');
+			this.maxDepthUniformLocation = this.gl.getUniformLocation(this.program, 'max_depth');
+			this.aspectRatioUniformLocation = this.gl.getUniformLocation(this.program, 'aspect_ratio');
+
 		}
 		render(imageList :Polygon[]) {
 			let gl = this.gl;
@@ -81,22 +84,49 @@ export module PolygonShader {
 				gl.uniform3fv(this.baseColorUniformLocation, color);
 				gl.uniform1f(this.turbidityUniformLocation, TURBIDITY);
 				gl.uniform1f(this.maxDepthUniformLocation, this.maxDepth);
+				gl.uniform1f(this.aspectRatioUniformLocation, this.canvasAspect)
 
 				let positionBuffers = rectangles.map((rect)=> {
 					let positionBuffer = gl.createBuffer();
 					// 生成したバッファをバインドする
 					gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-					gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-						rect.topLeft.x, rect.topLeft.y, rect.topLeft.z,
-						rect.topRight.x, rect.topRight.y, rect.topRight.z,
-						rect.bottomLeft.x, rect.bottomLeft.y, rect.bottomLeft.z,
-						rect.bottomRight.x, rect.bottomRight.y, rect.bottomRight.z,
-					]), gl.STATIC_DRAW);
+					let tl = rect.topLeft;
+					let tr = rect.topRight;
+					let bl = rect.bottomLeft;
+					let br = rect.bottomRight;
+					let tc = avl(tl, tr);
+					let bc = avl(bl, br);
+					let cc = avl(tc, bc);
+					let cl = avl(tl, bl);
+					let cr = avl(tr, br);
+					function avl(p1, p2){
+						return {
+							x: (p1.x + p2.x) / 2,
+							y: (p1.y + p2.y) / 2,
+							z: (p1.z + p2.z) / 2,
+						}
+					}
+					let arr = [
+						tl.x, tl.y, tl.z,
+						tc.x, tc.y, tc.z,
+						cc.x, cc.y, cc.z,
+						tr.x, tr.y, tr.z,
+						cr.x, cr.y, cr.z,
+						cc.x, cc.y, cc.z,
+						br.x, br.y, br.z,
+						bc.x, bc.y, bc.z,
+						cc.x, cc.y, cc.z,
+						bl.x, bl.y, bl.z,
+						cl.x, cl.y, cl.z,
+						cc.x, cc.y, cc.z,
+						tl.x, tl.y, tl.z,
+					];
+					gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(arr), gl.STATIC_DRAW);
 					// ポリゴンを描画
 					var positionAddress = gl.getAttribLocation(this.program, "position");
 					gl.enableVertexAttribArray(positionAddress);
 					gl.vertexAttribPointer(positionAddress, 3, gl.FLOAT, false, 0, 0);
-					gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4); // LINE_STRIP
+					gl.drawArrays(gl.TRIANGLE_STRIP, 0, arr.length / 3); // LINE_STRIP
 					gl.bindBuffer(gl.ARRAY_BUFFER, null);
 					gl.flush();
 				});
