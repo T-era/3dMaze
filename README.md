@@ -62,4 +62,4 @@
 
 ----
 
-https://ytel.up.seesaa.net/mz/index.html
+https://blog-imgs-138.fc2.com/z/f/i/zfi6lvt4ewo7/index.html
